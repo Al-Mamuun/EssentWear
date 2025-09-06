@@ -1,0 +1,126 @@
+{% load static %}
+
+<style>
+.footer {
+  background: #111;
+  color: #ccc;
+  padding: 40px 0;
+  font-family: sans-serif;
+}
+
+.footer .footer-title {
+  color: #fff;
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.footer a {
+  color: #bbb;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.footer a:hover {
+  color: #fff;
+}
+
+.footer-top .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 30px;
+}
+
+.footer-bottom {
+  border-top: 1px solid #333;
+  margin-top: 30px;
+  padding-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.social-icons a {
+  font-size: 20px;
+  margin-right: 10px;
+  color: #bbb;
+}
+
+.social-icons a:hover {
+  color: #fff;
+}
+
+.payment-img {
+  height: 30px;
+}
+</style>
+
+<footer class="footer">
+
+  <div class="footer-top">
+    <div class="container grid">
+
+      <!-- Brand Info -->
+      <div class="footer-brand">
+        <h2 class="brand-title">Essentwear</h2>
+        <p class="brand-text">
+          Your trusted store for fashion, cosmetics, and lifestyle products.
+        </p>
+      </div>
+
+      <!-- Categories -->
+      <div class="footer-links">
+        <h3 class="footer-title">Categories</h3>
+        <ul>
+          <li><a href="#">Fashion</a></li>
+          <li><a href="#">Footwear</a></li>
+          <li><a href="#">Jewellery</a></li>
+          <li><a href="#">Cosmetics</a></li>
+        </ul>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-links">
+        <h3 class="footer-title">Quick Links</h3>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Terms & Conditions</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div class="footer-links">
+        <h3 class="footer-title">Contact</h3>
+        <ul>
+          <li><ion-icon name="location-outline"></ion-icon> 419 State 414 Rte, NY, USA</li>
+          <li><ion-icon name="call-outline"></ion-icon> <a href="tel:+6079368058">(607) 936-8058</a></li>
+          <li><ion-icon name="mail-outline"></ion-icon> <a href="mailto:example@gmail.com">example@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <!-- Social -->
+      <div class="footer-links">
+        <h3 class="footer-title">Follow Us</h3>
+        <div class="social-icons">
+          <a href="#"><ion-icon name="logo-facebook"></ion-icon></a>
+          <a href="#"><ion-icon name="logo-twitter"></ion-icon></a>
+          <a href="#"><ion-icon name="logo-instagram"></ion-icon></a>
+          <a href="#"><ion-icon name="logo-linkedin"></ion-icon></a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p class="copyright">
+      © {{ year }} <a href="#">Essentwear</a>. All Rights Reserved.
+    </p>
+
+    <img src="{% static 'images/payment.png' %}" alt="Payment Methods" class="payment-img">
+  </div>
+
+</footer>

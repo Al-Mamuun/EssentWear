@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Essentwear - eCommerce Website</title>
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="{% static 'images/logo/favicon.ico' %}" type="image/x-icon">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{% static 'css/style-prefix.css' %}">
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div class="overlay" data-overlay></div>
+  
+  <!-- HEADER -->
+  {% include 'home/header.html' %}
+
+  <!-- MAIN CONTENT -->
+  <main>
+    
+    <!-- BANNER SECTION -->
+    <div class="banner">
+      <div class="container">
+        <div class="slider-container has-scrollbar">
+          <!-- Slider item -->
+          <div class="slider-item">
+            <img src="{% static 'images/banner-1.jpg' %}" alt="Women's latest fashion sale" class="banner-img">
+            <div class="banner-content">
+              <p class="banner-subtitle">Trending item</p>
+              <h2 class="banner-title">Women's latest fashion sale</h2>
+              <p class="banner-text">Starting at $<b>20</b>.00</p>
+              <a href="#" class="banner-btn">Shop now</a>
+            </div>
+          </div>
+          <!-- More slider items -->
+        </div>
+      </div>
+    </div>
+
+    <!-- CATEGORY -->
+    {% include 'home/category.html' %}
+
+    <!-- PRODUCT -->
+    {% include 'home/product.html' %}
+
+    <!-- PRODUCT BOX -->
+    {% include 'home/product_box.html' %}
+
+    <!-- PRODUCT FEATURED -->
+    {% include 'home/product_feature.html' %}
+
+    <!-- PRODUCT GRID -->
+    {% include 'home/product_grid.html' %}
+
+  </main>
+
+  <!-- FOOTER -->
+  {% include 'home/footer.html' %}
+
+  <!-- Custom JS -->
+  <script src="{% static 'js/script.js' %}"></script>
+
+  <!-- Ionicons -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+</html>
