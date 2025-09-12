@@ -6,12 +6,7 @@
   <title>Essentwear | Sign In & Sign Up</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Poppins", sans-serif;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", sans-serif; }
 
     body {
       display: flex;
@@ -27,12 +22,6 @@
       border-radius: 15px;
       box-shadow: 0px 6px 25px rgba(0,0,0,0.2);
       overflow: hidden;
-      animation: fadeIn 0.6s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
     }
 
     .header-brand {
@@ -42,111 +31,52 @@
     }
 
     .header-brand svg {
-      width: 50px;
-      height: 50px;
-      fill: #ff4f81;
+      width: 50px; height: 50px; fill: #ff4f81;
     }
 
     .header-brand h1 {
-      margin-top: 10px;
-      font-size: 22px;
-      font-weight: 700;
-      color: #333;
+      margin-top: 10px; font-size: 22px; font-weight: 700; color: #333;
     }
 
-    .tabs {
-      display: flex;
-      justify-content: space-around;
-      background: #f8f8f8;
-      border-bottom: 1px solid #ddd;
-    }
-
+    .tabs { display: flex; justify-content: space-around; background: #f8f8f8; border-bottom: 1px solid #ddd; }
     .tabs button {
-      flex: 1;
-      padding: 14px;
-      cursor: pointer;
-      background: none;
-      border: none;
-      font-size: 16px;
-      font-weight: 600;
-      transition: 0.3s;
+      flex: 1; padding: 14px; cursor: pointer; background: none; border: none; font-size: 16px; font-weight: 600; transition: 0.3s;
     }
+    .tabs button.active { background: #ff7eb3; color: #fff; }
 
-    .tabs button.active {
-      background: #ff7eb3;
-      color: #fff;
-    }
+    form { padding: 25px; display: none; }
+    form.active { display: block; }
+    form h2 { margin-bottom: 20px; text-align: center; color: #333; }
 
-    form {
-      padding: 25px;
-      display: none;
-    }
-
-    form.active {
-      display: block;
-    }
-
-    form h2 {
-      margin-bottom: 20px;
-      text-align: center;
-      color: #333;
-    }
-
-    .input-group {
-      margin-bottom: 15px;
-    }
-
-    .input-group label {
-      display: block;
-      margin-bottom: 5px;
-      color: #555;
-      font-size: 14px;
-    }
-
+    .input-group { margin-bottom: 15px; }
+    .input-group label { display: block; margin-bottom: 5px; color: #555; font-size: 14px; }
     .input-group input {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      outline: none;
-      transition: 0.3s;
+      width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; outline: none; transition: 0.3s;
     }
-
-    .input-group input:focus {
-      border-color: #ff7eb3;
-      box-shadow: 0 0 4px rgba(255,126,179,0.6);
-    }
+    .input-group input:focus { border-color: #ff7eb3; box-shadow: 0 0 4px rgba(255,126,179,0.6); }
 
     .btn {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      background: #ff7eb3;
-      color: white;
-      font-size: 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.3s;
+      width: 100%; padding: 12px; border: none; background: #ff7eb3; color: white; font-size: 16px;
+      border-radius: 8px; cursor: pointer; transition: 0.3s;
     }
+    .btn:hover { background: #ff4f81; }
 
-    .btn:hover {
-      background: #ff4f81;
+    .extra-links { text-align: center; margin-top: 12px; }
+    .extra-links a { color: #ff4f81; text-decoration: none; font-size: 14px; font-weight: 500; }
+    .extra-links a:hover { text-decoration: underline; }
+
+    /* Modal */
+    .modal {
+      display: none; position: fixed; z-index: 999; left: 0; top: 0;
+      width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center;
     }
-
-    .extra-links {
-      text-align: center;
-      margin-top: 12px;
+    .modal-content {
+      background: #fff; padding: 25px; width: 350px; border-radius: 12px; text-align: center;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
     }
-
-    .extra-links a {
-      color: #ff4f81;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    .extra-links a:hover {
-      text-decoration: underline;
+    .modal-content h2 { margin-bottom: 15px; color: #333; }
+    .close-btn {
+      position: absolute; top: 20px; right: 30px; font-size: 22px; cursor: pointer; color: #fff;
     }
   </style>
 </head>
@@ -155,7 +85,6 @@
   <div class="container">
     <!-- Brand Logo -->
     <div class="header-brand">
-      <!-- Shopping Bag Icon -->
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4H6zm0 4h12v2H6V6zm2 6a1 1 0 110-2 1 1 0 010 2zm8 0a1 1 0 110-2 1 1 0 010 2z"/>
       </svg>
@@ -181,7 +110,7 @@
       </div>
       <button type="submit" class="btn">Login</button>
       <div class="extra-links">
-        <a href="{% url 'forget' %}">Forgot Password?</a>
+        <a href="#" id="forgotLink">Forgot Password?</a>
       </div>
     </form>
 
@@ -208,11 +137,29 @@
     </form>
   </div>
 
+  <!-- Forget Password Modal -->
+  <div id="forgotModal" class="modal">
+    <div class="modal-content">
+      <h2>Reset Password</h2>
+      <p style="margin-bottom:15px; font-size:14px; color:#666;">
+        Enter your email address and we’ll send you reset instructions.
+      </p>
+      <div class="input-group">
+        <input type="email" placeholder="Enter your email" required>
+      </div>
+      <button class="btn">Send Reset Link</button>
+    </div>
+    <span class="close-btn" id="closeModal">&times;</span>
+  </div>
+
   <script>
     const loginTab = document.getElementById("loginTab");
     const signupTab = document.getElementById("signupTab");
     const loginForm = document.getElementById("loginForm");
     const signupForm = document.getElementById("signupForm");
+    const forgotLink = document.getElementById("forgotLink");
+    const forgotModal = document.getElementById("forgotModal");
+    const closeModal = document.getElementById("closeModal");
 
     loginTab.addEventListener("click", () => {
       loginTab.classList.add("active");
@@ -226,6 +173,21 @@
       loginTab.classList.remove("active");
       signupForm.classList.add("active");
       loginForm.classList.remove("active");
+    });
+
+    forgotLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      forgotModal.style.display = "flex";
+    });
+
+    closeModal.addEventListener("click", () => {
+      forgotModal.style.display = "none";
+    });
+
+    window.addEventListener("click", (e) => {
+      if (e.target === forgotModal) {
+        forgotModal.style.display = "none";
+      }
     });
   </script>
 </body>

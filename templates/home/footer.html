@@ -1,63 +1,141 @@
 {% load static %}
 
 <style>
-.footer {
-  background: #111;
-  color: #ccc;
-  padding: 40px 0;
-  font-family: sans-serif;
-}
+  .footer {
+    background: #111;
+    color: #ccc;
+    padding: 50px 20px;
+    font-family: "Poppins", sans-serif;
+  }
 
-.footer .footer-title {
-  color: #fff;
-  margin-bottom: 15px;
-  font-size: 18px;
-  font-weight: bold;
-}
+  .footer .footer-title {
+    color: #fff;
+    margin-bottom: 18px;
+    font-size: 18px;
+    font-weight: 600;
+  }
 
-.footer a {
-  color: #bbb;
-  text-decoration: none;
-  transition: 0.3s;
-}
+  .footer a {
+    color: #bbb;
+    text-decoration: none;
+    transition: 0.3s;
+  }
 
-.footer a:hover {
-  color: #fff;
-}
+  .footer a:hover {
+    color: #ff7eb3;
+  }
 
-.footer-top .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 30px;
-}
+  .footer-top .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 35px;
+  }
 
-.footer-bottom {
-  border-top: 1px solid #333;
-  margin-top: 30px;
-  padding-top: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-}
+  .footer-brand .brand-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #ff7eb3;
+    margin-bottom: 10px;
+  }
 
-.social-icons a {
-  font-size: 20px;
-  margin-right: 10px;
-  color: #bbb;
-}
+  .footer-brand .brand-text {
+    line-height: 1.6;
+    font-size: 14px;
+    color: #bbb;
+  }
 
-.social-icons a:hover {
-  color: #fff;
-}
+  .footer-links ul {
+    list-style: none;
+    padding: 0;
+  }
 
-.payment-img {
-  height: 30px;
-}
+  .footer-links li {
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+
+  /* Contact Icons */
+  .footer-links .contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #bbb;
+  }
+
+  .footer-links .contact-item ion-icon {
+    background: #ff7eb3;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 16px;
+    padding: 6px;
+    margin-right: 10px;
+    flex-shrink: 0;
+    transition: 0.3s;
+  }
+
+  .footer-links .contact-item ion-icon:hover {
+    background: #fff;
+    color: #ff7eb3;
+    transform: scale(1.1);
+  }
+
+  /* Social Icons */
+  .social-icons {
+    display: flex;
+    gap: 12px;
+  }
+
+  .social-icons a {
+    background: #222;
+    border-radius: 50%;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+  }
+
+  .social-icons a ion-icon {
+    font-size: 20px;
+    color: #fff;
+  }
+
+  .social-icons a:hover {
+    background: #ff7eb3;
+    transform: translateY(-3px);
+  }
+
+  .footer-bottom {
+    border-top: 1px solid #333;
+    margin-top: 35px;
+    padding-top: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 14px;
+  }
+
+  .footer-bottom a {
+    color: #ff7eb3;
+    font-weight: 500;
+  }
+
+  .payment-img {
+    height: 32px;
+  }
+
+  @media(max-width: 768px) {
+    .footer-bottom {
+      flex-direction: column;
+      text-align: center;
+      gap: 12px;
+    }
+  }
 </style>
 
 <footer class="footer">
-
   <div class="footer-top">
     <div class="container grid">
 
@@ -65,7 +143,8 @@
       <div class="footer-brand">
         <h2 class="brand-title">Essentwear</h2>
         <p class="brand-text">
-          Your trusted store for fashion, cosmetics, and lifestyle products.
+          Your trusted destination for fashion, footwear, jewellery, and lifestyle products.  
+          We bring elegance & quality to your everyday life.
         </p>
       </div>
 
@@ -73,10 +152,10 @@
       <div class="footer-links">
         <h3 class="footer-title">Categories</h3>
         <ul>
-          <li><a href="#">Fashion</a></li>
-          <li><a href="#">Footwear</a></li>
-          <li><a href="#">Jewellery</a></li>
-          <li><a href="#">Cosmetics</a></li>
+          <li><a href="#">👗 Fashion</a></li>
+          <li><a href="#">👟 Footwear</a></li>
+          <li><a href="#">💍 Jewellery</a></li>
+          <li><a href="#">💄 Cosmetics</a></li>
         </ul>
       </div>
 
@@ -84,21 +163,28 @@
       <div class="footer-links">
         <h3 class="footer-title">Quick Links</h3>
         <ul>
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Contact</a></li>
-          <li><a href="#">Terms & Conditions</a></li>
-          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">ℹ️ About Us</a></li>
+          <li><a href="#">📞 Contact</a></li>
+          <li><a href="#">📜 Terms & Conditions</a></li>
+          <li><a href="#">🔒 Privacy Policy</a></li>
         </ul>
       </div>
 
       <!-- Contact -->
       <div class="footer-links">
         <h3 class="footer-title">Contact</h3>
-        <ul>
-          <li><ion-icon name="location-outline"></ion-icon> 419 State 414 Rte, NY, USA</li>
-          <li><ion-icon name="call-outline"></ion-icon> <a href="tel:+6079368058">(607) 936-8058</a></li>
-          <li><ion-icon name="mail-outline"></ion-icon> <a href="mailto:example@gmail.com">example@gmail.com</a></li>
-        </ul>
+        <div class="contact-item">
+          <ion-icon name="location-outline"></ion-icon>
+          24/1, Nur Zahan Villa, Green Road, Dhaka
+        </div>
+        <div class="contact-item">
+          <ion-icon name="call-outline"></ion-icon>
+          <a href="tel:+8801580000000">(+88) 01580 000 000</a>
+        </div>
+        <div class="contact-item">
+          <ion-icon name="mail-outline"></ion-icon>
+          <a href="mailto:MN@gmail.com">MN@gmail.com</a>
+        </div>
       </div>
 
       <!-- Social -->
@@ -119,8 +205,6 @@
     <p class="copyright">
       © {{ year }} <a href="#">Essentwear</a>. All Rights Reserved.
     </p>
-
     <img src="{% static 'images/payment.png' %}" alt="Payment Methods" class="payment-img">
   </div>
-
 </footer>

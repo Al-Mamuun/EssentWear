@@ -31,3 +31,9 @@ def product_grid(request):
 
 def signup(request):
     return render(request, 'authentication/signup.html')
+
+def forget(request):
+    return render(request, 'authentication/forget.html')
+
+def login(request):
+    return render(request, 'authentication/login.html')
