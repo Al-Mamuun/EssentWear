@@ -1,0 +1,335 @@
+{% load static %}
+
+<style>
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+      button {
+        cursor: pointer;
+        border: none;
+        background: none;
+      }
+
+
+      .header-top {
+        background: #111;
+        color: #fff;
+        padding: 8px 0;
+        font-size: 14px;
+      }
+      .header-top .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+      }
+      .header-top .btn {
+        padding: 6px 14px;
+        border-radius: 6px;
+        background: #ff7eb3;
+        color: #fff;
+        transition: all 0.3s;
+        font-weight: 500;
+      }
+      .header-top .btn:hover {
+        background: #ff4f81;
+      }
+      .top-logo {
+        font-weight: 700;
+        font-size: 18px;
+        letter-spacing: 0.5px;
+        color: #fff;
+        display: flex;
+        align-items: center;
+      }
+      .top-logo span {
+        color: #ff7eb3;
+      }
+
+      .header-main {
+        background: #fff;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        padding: 12px 0;
+      }
+      .header-main .container {
+        display: flex;
+        justify-content: center; /* center items */
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+        gap: 20px;
+        position: relative;
+      }
+
+      /* Logo */
+      .header-logo {
+        position: absolute;
+        left: 15px;
+        display: flex;
+        align-items: center;
+      }
+      .header-logo img {
+        height: 40px;
+        width: auto;
+      }
+
+      /* Search bar */
+      .header-search-container {
+        flex: 0 1 500px; /* centered with max width */
+        display: flex;
+        border: 1px solid #ddd;
+        border-radius: 30px;
+        overflow: hidden;
+      }
+      .header-search-container input {
+        flex: 1;
+        padding: 10px 15px;
+        border: none;
+        outline: none;
+      }
+      .header-search-container button {
+        background: #ff7eb3;
+        color: #fff;
+        padding: 0 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s;
+      }
+      .header-search-container button:hover {
+        background: #ff4f81;
+      }
+
+      /* User actions */
+      .header-user-actions {
+        position: absolute;
+        right: 15px;
+        display: flex;
+        gap: 15px;
+      }
+      .header-user-actions .action-btn {
+        position: relative;
+        background: #fff;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #ddd;
+        transition: all 0.3s;
+      }
+      .header-user-actions .action-btn:hover {
+        background: #ff7eb3;
+        color: #fff;
+        border-color: transparent;
+      }
+      .header-user-actions .count {
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        background: #ff4f81;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 2px 6px;
+        border-radius: 50%;
+      }
+
+      /* ------------------------------
+   Desktop Navigation Menu
+------------------------------ */
+      .desktop-navigation-menu {
+        background: #ff7eb3;
+        color: #fff;
+        font-weight: 500;
+      }
+      .desktop-navigation-menu .container {
+        display: flex;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+      }
+      .desktop-menu-category-list {
+        display: flex;
+        list-style: none;
+        gap: 25px;
+      }
+      .desktop-menu-category-list li a {
+        display: block;
+        padding: 12px 0;
+        color: #fff;
+        transition: all 0.3s;
+      }
+      .desktop-menu-category-list li a:hover {
+        color: #b15e91;
+      }
+
+      /* Dropdowns */
+      .desktop-menu-category-list li.menu-category {
+        position: relative;
+      }
+      .desktop-navigation-menu .menu-category .dropdown-panel {
+        display: none;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        padding: 15px;
+        background: #fff;
+        border-radius: 8px;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: max-content;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+      }
+      .desktop-menu-category-list li.menu-category:hover .dropdown-panel {
+        display: grid;
+      }
+      .dropdown-panel-list {
+        list-style: none;
+        text-align: center;
+        padding: 0;
+      }
+      .dropdown-panel-list li {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .dropdown-panel-list li a {
+        margin-bottom: 8px;
+        font-size: 15px;
+        color: #333;
+        font-weight: 500;
+      }
+      .dropdown-panel-list li img {
+        width: 200px;
+        height: auto;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <!-- Header Top -->
+      <div class="header-top">
+        <div class="container">
+          <div class="top-logo">ESSENT<span>WEAR</span></div>
+          <div class="header-top-actions">
+            <a href="{% url 'signup' %}" class="btn">Sign Up</a>
+            <a href="{% url 'login' %}" class="btn">Log In</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Header Main -->
+      <div class="header-main">
+        <div class="container">
+          <div class="header-logo">
+            <img
+              src="{% static 'images/logo/M.svg' %}"
+              alt="Logo"
+              type="image/x-icon"
+            />
+          </div>
+          <div class="header-search-container">
+            <input
+              type="search"
+              name="search"
+              placeholder="Search products..."
+            />
+            <button><ion-icon name="search-outline"></ion-icon></button>
+          </div>
+          <div class="header-user-actions">
+            <button class="action-btn">
+              <ion-icon name="heart-outline"></ion-icon>
+              <span class="count">0</span>
+            </button>
+            <button class="action-btn">
+              <ion-icon name="bag-handle-outline"></ion-icon>
+              <span class="count">0</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desktop Navigation Menu -->
+      <nav class="desktop-navigation-menu">
+        <div class="container">
+          <ul class="desktop-menu-category-list">
+            <li class="menu-category"><a href="#">Home</a></li>
+            <li class="menu-category">
+              <a href="#">Categories</a>
+              <div class="dropdown-panel">
+                <ul class="dropdown-panel-list">
+                  <li>
+                    <a href="#">Electronics</a>
+                    <img
+                      src="{% static 'images/electronics-banner-1.jpg' %}"
+                      alt="Electronics"
+                    />
+                  </li>
+                </ul>
+                <ul class="dropdown-panel-list">
+                  <li>
+                    <a href="#">Men's Fashion</a>
+                    <img
+                      src="{% static 'images/mens-banner.jpg' %}"
+                      alt="Men's Fashion"
+                    />
+                  </li>
+                </ul>
+                <ul class="dropdown-panel-list">
+                  <li>
+                    <a href="#">Women's Fashion</a>
+                    <img
+                      src="{% static 'images/womens-banner.jpg' %}"
+                      alt="Women's Fashion"
+                    />
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="menu-category"><a href="#">Men's</a></li>
+            <li class="menu-category"><a href="#">Women's</a></li>
+            <li class="menu-category"><a href="#">Jewelry</a></li>
+            <li class="menu-category"><a href="#">Perfume</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <!-- BANNER SECTION -->
+    <div class="banner">
+      <div class="container">
+        <div class="slider-container has-scrollbar">
+          <!-- Slider item -->
+          <div class="slider-item">
+            <img
+              src="{% static 'images/banner-1.jpg' %}"
+              alt="Women's latest fashion sale"
+              class="banner-img"
+            />
+            <div class="banner-content">
+              <p class="banner-subtitle">Trending item</p>
+              <h2 class="banner-title">Women's latest fashion sale</h2>
+              <p class="banner-text">Starting at BDT<b> 200</b>.00</p>
+              <a href="#" class="banner-btn">Shop now</a>
+            </div>
+          </div>
+          <!-- More slider items -->
+        </div>
+      </div>
+    </div>
+  </body>
+
