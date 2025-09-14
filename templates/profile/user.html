@@ -1,0 +1,23 @@
+
+
+<div class="dashboard-container" style="padding:20px; font-family:sans-serif;">
+  <h2 style="color:#333;">🙋 User Dashboard</h2>
+  <p>Welcome <strong>{{ request.user.username }}</strong>! Explore our latest products below.</p>
+
+  <div style="margin-top:30px;">
+    <h3>🛍️ Available Products</h3>
+    <ul>
+      {% for product in products %}
+        <li>
+          <strong>{{ product.name }}</strong> - ${{ product.price }}
+          <a href="{% url 'product_detail' product.id %}">View</a> |
+          <a href="{% url 'add_to_cart' product.id %}">Add to Cart</a>
+        </li>
+      {% empty %}
+        <p>No products available yet.</p>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+

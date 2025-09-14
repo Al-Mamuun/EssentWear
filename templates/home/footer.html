@@ -1,11 +1,23 @@
 {% load static %}
 
 <style>
+  /* Footer Base */
   .footer {
-    background: #111;
+    background: linear-gradient(135deg, #1a1a1a, #111);
     color: #ccc;
     padding: 50px 20px;
     font-family: "Poppins", sans-serif;
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.3);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.8s ease-in-out;
+  }
+
+  .footer.show {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .footer .footer-title {
@@ -23,6 +35,7 @@
 
   .footer a:hover {
     color: #ff7eb3;
+    transform: translateX(3px);
   }
 
   .footer-top .grid {
@@ -32,10 +45,10 @@
   }
 
   .footer-brand .brand-title {
-    font-size: 22px;
+    font-size: 24px;
     font-weight: 700;
     color: #ff7eb3;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
 
   .footer-brand .brand-text {
@@ -52,15 +65,21 @@
   .footer-links li {
     margin-bottom: 10px;
     font-size: 14px;
+    transition: 0.3s;
   }
 
-  /* Contact Icons */
+  .footer-links li:hover {
+    color: #ff7eb3;
+    transform: translateX(5px);
+  }
+
   .footer-links .contact-item {
     display: flex;
     align-items: center;
     margin-bottom: 12px;
     font-size: 14px;
     color: #bbb;
+    transition: 0.3s;
   }
 
   .footer-links .contact-item ion-icon {
@@ -74,16 +93,16 @@
     transition: 0.3s;
   }
 
-  .footer-links .contact-item ion-icon:hover {
+  .footer-links .contact-item:hover ion-icon {
     background: #fff;
     color: #ff7eb3;
-    transform: scale(1.1);
+    transform: scale(1.2);
   }
 
-  /* Social Icons */
   .social-icons {
     display: flex;
     gap: 12px;
+    margin-top: 5px;
   }
 
   .social-icons a {
@@ -93,17 +112,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: 0.3s;
+    transition: all 0.3s;
   }
 
   .social-icons a ion-icon {
     font-size: 20px;
     color: #fff;
+    transition: all 0.3s;
   }
 
   .social-icons a:hover {
     background: #ff7eb3;
-    transform: translateY(-3px);
+    transform: translateY(-5px) scale(1.1);
   }
 
   .footer-bottom {
@@ -115,6 +135,7 @@
     align-items: center;
     flex-wrap: wrap;
     font-size: 14px;
+    color: #bbb;
   }
 
   .footer-bottom a {
@@ -124,6 +145,7 @@
 
   .payment-img {
     height: 32px;
+    object-fit: contain;
   }
 
   @media(max-width: 768px) {
@@ -135,7 +157,7 @@
   }
 </style>
 
-<footer class="footer">
+<footer class="footer" id="footer">
   <div class="footer-top">
     <div class="container grid">
 
@@ -208,3 +230,18 @@
     <img src="{% static 'images/payment.png' %}" alt="Payment Methods" class="payment-img">
   </div>
 </footer>
+
+<script>
+  // Fade-in on scroll
+  const footer = document.getElementById('footer');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        footer.classList.add('show');
+      }
+    });
+  }, { threshold: 0.2 });
+
+  observer.observe(footer);
+</script>

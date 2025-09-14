@@ -4,48 +4,58 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Essentwear | Sign In</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Poppins", sans-serif;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", sans-serif; }
 
     body {
       display: flex;
       align-items: center;
       justify-content: center;
       height: 100vh;
-      background: linear-gradient(to right, #6a11cb, #2575fc);
+      background: linear-gradient(135deg, #ff758c, #ff7eb3);
     }
 
     .container {
-      width: 400px;
+      width: 420px;
       background: #fff;
-      border-radius: 12px;
-      box-shadow: 0px 6px 20px rgba(0,0,0,0.15);
-      padding: 30px;
-    }
-
-    .logo {
+      border-radius: 15px;
+      box-shadow: 0px 6px 25px rgba(0,0,0,0.2);
+      overflow: hidden;
+      padding: 25px;
       text-align: center;
-      margin-bottom: 20px;
+      animation: fadeIn 0.6s ease-in-out;
     }
 
-    .logo h2 {
-      font-size: 28px;
-      font-weight: bold;
-      color: #2575fc;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .header-brand {
+      text-align: center;
+      padding: 20px 15px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .header-brand svg {
+      width: 50px;
+      height: 50px;
+      fill: #ff4f81;
+    }
+
+    .header-brand h1 {
+      margin-top: 10px;
+      font-size: 24px;
+      font-weight: 700;
+      color: #333;
     }
 
     .tabs {
       display: flex;
-      justify-content: space-between;
-      margin-bottom: 20px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      overflow: hidden;
+      justify-content: space-around;
+      margin: 20px 0;
+      border-bottom: 1px solid #ddd;
     }
 
     .tabs button {
@@ -60,32 +70,29 @@
     }
 
     .tabs button.active {
-      background: #2575fc;
+      background: #ff7eb3;
       color: #fff;
+      border-radius: 8px 8px 0 0;
     }
 
     form {
       display: none;
+      text-align: left;
     }
 
-    form.active {
-      display: block;
-    }
+    form.active { display: block; }
 
-    .input-group {
-      margin-bottom: 15px;
-    }
-
+    .input-group { margin-bottom: 15px; }
     .input-group label {
       display: block;
       margin-bottom: 5px;
+      color: #555;
       font-size: 14px;
-      color: #444;
     }
 
     .input-group input {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       border: 1px solid #ddd;
       border-radius: 8px;
       outline: none;
@@ -93,42 +100,47 @@
     }
 
     .input-group input:focus {
-      border-color: #2575fc;
+      border-color: #ff7eb3;
+      box-shadow: 0 0 4px rgba(255,126,179,0.6);
     }
 
     .btn {
       width: 100%;
       padding: 12px;
       border: none;
-      border-radius: 8px;
-      background: #2575fc;
+      background: #ff7eb3;
       color: white;
       font-size: 16px;
-      font-weight: 600;
+      border-radius: 8px;
       cursor: pointer;
       transition: 0.3s;
+      margin-top: 10px;
     }
 
-    .btn:hover {
-      background: #1a5ed1;
-    }
+    .btn:hover { background: #ff4f81; }
 
     .extra-links {
-      text-align: center;
+      text-align: right;
       margin-top: 10px;
     }
 
     .extra-links a {
-      color: #2575fc;
+      color: #ff4f81;
       text-decoration: none;
       font-size: 14px;
     }
+    .extra-links a:hover { text-decoration: underline; }
+
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="logo">
-      <h2>Essentwear</h2>
+    <!-- Brand Logo -->
+    <div class="header-brand">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4H6zm0 4h12v2H6V6zm2 6a1 1 0 110-2 1 1 0 010 2zm8 0a1 1 0 110-2 1 1 0 010 2z"/>
+      </svg>
+      <h1>Essentwear</h1>
     </div>
 
     <!-- Tabs -->
@@ -138,34 +150,36 @@
     </div>
 
     <!-- User Login -->
-    <form id="userForm" class="active" action="/user_signin/" method="post">
+    <form id="userForm" class="active" action="{% url 'login' %}" method="post">
+      {% csrf_token %}
       <div class="input-group">
         <label>Email</label>
-        <input type="email" placeholder="Enter your email" required>
+        <input type="email" name="email" placeholder="Enter your email" required>
       </div>
       <div class="input-group">
         <label>Password</label>
-        <input type="password" placeholder="Enter your password" required>
+        <input type="password" name="password" placeholder="Enter your password" required>
       </div>
       <button type="submit" class="btn">Login as User</button>
       <div class="extra-links">
-        <a href="#">Forgot Password?</a>
+        <a href="{% url 'forget' %}">Forgot Password?</a>
       </div>
     </form>
 
     <!-- Seller Login -->
-    <form id="sellerForm" action="/seller_signin/" method="post">
+    <form id="sellerForm" action="{% url 'login' %}" method="post">
+      {% csrf_token %}
       <div class="input-group">
         <label>Email</label>
-        <input type="email" placeholder="Enter seller email" required>
+        <input type="email" name="email" placeholder="Enter seller email" required>
       </div>
       <div class="input-group">
         <label>Password</label>
-        <input type="password" placeholder="Enter seller password" required>
+        <input type="password" name="password" placeholder="Enter seller password" required>
       </div>
       <button type="submit" class="btn">Login as Seller</button>
       <div class="extra-links">
-        <a href="#">Forgot Password?</a>
+        <a href="{% url 'forget' %}">Forgot Password?</a>
       </div>
     </form>
   </div>
