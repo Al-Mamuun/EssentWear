@@ -1,74 +1,160 @@
 {% extends 'app/base.html' %}
 {% load static %}
 {% block title %}Cart{% endblock title %}
+
 {% block main-content %}
 <div class="container my-5">
- <div class="row">
   <h1 class="text-center mb-5">Shopping Cart</h1>
-  <div class="col-sm-8">
-  <div class="card">
-   <div class="card-body">
-    <h3>Cart</h3>
+  <div class="row g-4">
+    <!-- Cart Items -->
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h4 class="mb-4">Your Cart Items</h4>
 
-    {% for c in cart %}
-    <hr>
-    <div class="row">
-     <div class="col-sm-3 text-center align-self-center"><img src="{{c.product.p_image.url}}" alt="" srcset="" class="img-fluid img-thumbnail shadow-sm" height="150" width="150"> </div>
-     <div class="col-sm-9">
-      <div>
-       <h5 class="mt-3 fw-bold">{{c.product.title}}</h5>
-       <p class="mb-2 text-muted small ">{{c.product.description}}</p>
-       <div class="my-3">
-        <label for="quantity">Quantity:</label>
-        <a class="minus-cart btn" pid="{{c.product.id}}"><i class="fas fa-minus-square fa-lg"></i></a>
-          <span id="quantity">{{c.quantity}}</span>
-        <a class="plus-cart btn" pid="{{c.product.id}}"><i class="fas fa-plus-square fa-lg"></i></a>
-       </div> 
-       <div class="d-flex justify-content-between">
-        <a href="#" class="btn btn-sm btn-secondary mr-3 remove-cart" pid="{{c.product.id}}">Remove item </a>
-        <p class="mb-0"><span><strong>Tk. {{c.product.discounted_price}}</strong></span></p>
-       </div>
+          {% if cart %}
+            {% for c in cart %}
+            <div class="row align-items-center mb-4 py-2 border-bottom">
+              <!-- Product Image -->
+              <div class="col-md-3 text-center">
+                <img src="{{c.product.p_image.url}}" alt="{{c.product.title}}" class="img-fluid img-thumbnail shadow-sm" style="max-height:150px;">
+              </div>
+
+              <!-- Product Details -->
+              <div class="col-md-6">
+                <h5 class="fw-bold">{{c.product.title}}</h5>
+                <p class="text-muted small">{{c.product.description}}</p>
+
+                <div class="d-flex align-items-center my-2">
+                  <label class="me-2 mb-0">Quantity:</label>
+                  <a class="btn btn-outline-secondary btn-sm me-2 minus-cart" pid="{{c.product.id}}">
+                    <i class="fas fa-minus"></i>
+                  </a>
+                  <span class="px-2 fw-bold" id="quantity">{{c.quantity}}</span>
+                  <a class="btn btn-outline-secondary btn-sm ms-2 plus-cart" pid="{{c.product.id}}">
+                    <i class="fas fa-plus"></i>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Price & Remove -->
+              <div class="col-md-3 text-center text-md-end">
+                <p class="mb-2"><strong>Tk. {{c.product.discounted_price}}</strong></p>
+                <a href="#" class="btn btn-sm btn-danger remove-cart" pid="{{c.product.id}}">
+                  <i class="fas fa-trash me-1"></i> Remove
+                </a>
+              </div>
+            </div>
+            {% endfor %}
+          {% else %}
+            <div class="alert alert-info text-center">
+              Your cart is empty.
+            </div>
+          {% endif %}
+
+        </div>
       </div>
-     </div>
     </div>
-    {% endfor %}
 
-
-   </div>
-   </div>
+    <!-- Cart Summary -->
+    <div class="col-lg-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h4 class="mb-4">Order Summary</h4>
+          <ul class="list-group list-group-flush mb-3">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              Subtotal
+              <span>Tk. <span id="amount">{{amount}}</span></span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              Shipping
+              <span>Tk. {{shipingamount}}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center fw-bold">
+              Total (incl. VAT)
+              <span>Tk. <span id="totalamount">{{totalamount}}</span></span>
+            </li>
+          </ul>
+          <div class="d-grid">
+            <a href="{% url 'checkout' %}" class="btn btn-primary btn-lg">
+              <i class="fas fa-shopping-cart me-2"></i> Place Order
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="col-sm-4">
-   <div class="card">
-    <div class="card-body">
-      <h3>The Total Amount of</h3>
-      <ul class="list-group">
-       <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">Amount<span>Tk. <span id="amount">{{amount}}</span></span></li>
-       <li class="list-group-item d-flex justify-content-between align-items-center px-0">Shipping<span>Tk. {{shipingamount}}</span></li>
-       <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
-        <div>
-           <strong>Total</strong> <small>(including VAT)</small>
-         </div>
-         <span><strong>Tk. <strong id="totalamount">{{totalamount}}</strong></strong></span>
-       </li>
-      </ul>
-      <div class="d-grid"><a href="{% url 'checkout' %}" class="btn btn-primary">Place Order</a></div>
+  <!-- Payment Methods -->
+  <div class="row mt-5">
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-body text-center">
+          <h5 class="mb-4">We Accept</h5>
+          <div class="d-flex flex-wrap justify-content-center gap-3">
+
+            <!-- bKash -->
+            <div class="payment-logo bkash">
+              <img src="{% static 'app/images/payavail/bk.PNG' %}" alt="bKash">
+            </div>
+
+            <!-- Nagad -->
+            <div class="payment-logo nagad">
+              <img src="{% static 'app/images/payavail/ngd.PNG' %}" alt="Nagad">
+            </div>
+
+            <!-- Visa -->
+            <div class="payment-logo visa">
+              <i class="fab fa-cc-visa"></i>
+            </div>
+
+            <!-- MasterCard -->
+            <div class="payment-logo mastercard">
+              <i class="fab fa-cc-mastercard"></i>
+            </div>
+
+            <!-- PayPal -->
+            <div class="payment-logo paypal">
+              <i class="fab fa-cc-paypal"></i>
+            </div>
+
+          </div>
+        </div>
+      </div>
     </div>
-   </div>
   </div>
-  
- </div>
+
 </div>
-<div class="container">
- <div class="row">
-  <div class="col-sm-8">
-   <div class="card">
-    <div class="card-body">
-      <h5 class="mb-4">We accept</h5>
-      <img src="{% static 'app/images/' %}" alt="" class="img-fluid">
-    </div>
-  </div>
-  </div>
- </div>
-</div>
+
+<!-- Payment Logo Styles -->
+<style>
+.payment-logo {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.payment-logo img {
+  max-width: 60%;
+  max-height: 60%;
+  object-fit: contain;
+}
+.payment-logo:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+.bkash { background: #E2136E; }
+.nagad { background: #F6931E; }
+.visa { background: #1A1F71; }
+.mastercard { background: #EB001B; }
+.paypal { background: #003087; }
+</style>
+
 {% endblock main-content %}

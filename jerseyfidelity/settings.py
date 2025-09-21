@@ -139,3 +139,4 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG = True
+APPEND_SLASH=False

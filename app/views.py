@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.views import View
 from .models import Customer, Product, Cart, OrderPlaced, ChatHistory
 from .forms import CustomerRegistrationForm, PasswordChangeForm , CustomerProfileForm
@@ -28,11 +28,20 @@ class ProductDeatilView(View):
 
 @login_required
 def add_to_cart(request):
- user=request.user
- product_id=request.GET.get('prod_id')
- product=Product.objects.get(id=product_id)
- Cart(user = user, product=product).save()
- return redirect('/cart')
+    if request.method == 'POST':
+        product_id = request.POST.get('prod_id')  # POST থেকে নেওয়া
+        product = get_object_or_404(Product, id=product_id)  # যদি product না থাকে, 404 দেখাবে
+
+        # Check if item already in cart
+        cart_item, created = Cart.objects.get_or_create(user=request.user, product=product)
+        if not created:
+            # যদি আগেই cart-এ থাকে, quantity বাড়ানো
+            cart_item.quantity += 1
+            cart_item.save()
+
+        return redirect('showcart')  # Cart page-এ redirect
+    else:
+        return redirect('/')  # GET request এ homepage-এ redirect
 
 @login_required
 def show_cart(request):
@@ -40,7 +49,7 @@ def show_cart(request):
   user = request.user
   cart = Cart.objects.filter(user=user)
   amount = 0.0
-  shiiping_amount = 60.0
+  shiiping_amount = 100.0
   total_amount = 0.0
   cart_product = [p for p in Cart.objects.all() if p.user == user]
   if cart_product:
@@ -118,33 +127,87 @@ def remove_cart(request):
   return JsonResponse(data)
 
 
+
 @method_decorator(login_required, name='dispatch')
 class ProfileView(View):
- def get(self, request):
-  form = CustomerProfileForm()
-  return render(request, 'app/profile.html', {'form': form, 'active': 'btn-primary'})
- def post(self, request):
-  form = CustomerProfileForm(request.POST)
-  if form.is_valid():
-   usr = request.user
-   name = form.cleaned_data['name']
-   phone_no = form.cleaned_data['phone_no']
-   email = form.cleaned_data['email']
-   address = form.cleaned_data['address']
-   reg = Customer(user=usr, name=name, phone_no=phone_no,email=email,address=address)
-   reg.save()
-   messages.success(request, 'Congratulations!! Profile Update Successfully')
-  return render(request, 'app/profile.html', {'form': form})
+    def get(self, request):
+        try:
+            profile = Customer.objects.get(user=request.user)
+            form = CustomerProfileForm(initial={
+                'name': profile.name,
+                'phone_no': profile.phone_no,
+                'email': profile.email,
+                'address': profile.address,
+                'gender': profile.gender,
+            })
+        except Customer.DoesNotExist:
+            form = CustomerProfileForm(initial={
+                'name': request.user.get_full_name(),
+                'email': request.user.email
+            })
+            profile = None
+
+        # Recent 5 orders
+        order_placed = OrderPlaced.objects.filter(user=request.user).order_by('-id')[:5]
+
+        return render(request, 'app/profile.html', {
+            'form': form,
+            'profile': profile,
+            'order_placed': order_placed,
+            'active': 'btn-primary'
+        })
+
+    def post(self, request):
+        try:
+            profile = Customer.objects.get(user=request.user)
+            form = CustomerProfileForm(request.POST, instance=profile)
+        except Customer.DoesNotExist:
+            form = CustomerProfileForm(request.POST)
+            profile = None
+
+        if form.is_valid():
+            customer = form.save(commit=False)
+            customer.user = request.user
+            customer.save()
+
+            # Update auth user email
+            request.user.email = form.cleaned_data.get('email')
+            request.user.save()
+
+            return redirect('profile')
+
+        order_placed = OrderPlaced.objects.filter(user=request.user).order_by('-id')[:5]
+        return render(request, 'app/profile.html', {
+            'form': form,
+            'profile': profile,
+            'order_placed': order_placed,
+        })
 
 @login_required
 def address(request):
- add = Customer.objects.filter(user=request.user)
- return render(request, 'app/address.html', {'add': add, 'active': 'btn-primary'})
+    add = Customer.objects.filter(user=request.user)
+
+    if request.method == "POST":
+        address_id = request.POST.get("address_id")
+        address_obj = get_object_or_404(Customer, id=address_id, user=request.user)
+
+        # Update fields from POST data
+        address_obj.name = request.POST.get("name")
+        address_obj.phone_no = request.POST.get("phone_no")
+        address_obj.email = request.POST.get("email")
+        address_obj.address = request.POST.get("address")
+        address_obj.save()
+
+        messages.success(request, "Address updated successfully!")
+        return redirect('address')  # Refresh page to show updated address
+
+    return render(request, 'app/address.html', {'add': add, 'active': 'btn-primary'})
 
 @login_required
 def orders(request):
-  op = OrderPlaced.objects.filter(user = request.user)
-  return render(request, 'app/orders.html', {'order_placed': op})
+    # ✅ সব orders
+    order_placed = OrderPlaced.objects.filter(user=request.user).order_by('-id')
+    return render(request, 'app/orders.html', {'order_placed': order_placed})
 
 class change_password(View):
  def get(self, request):
@@ -309,3 +372,27 @@ def generate_bot_response(user_message):
 
 
 
+# def search_products(request):
+#     query = request.GET.get('q')  # search box থেকে data
+#     if query:
+#         search_results = Product.objects.filter(title__icontains=query)
+#     else:
+#         search_results = Product.objects.none()  # empty queryset
+
+#     return render(request, 'app/search_results.html', {'search_results': search_results, 'query': query})
+
+
+def search_products(request):
+    query = request.GET.get('q', '').strip()  # Get search query
+    search_results = []
+
+    if query:
+        # Split query into words
+        words = query.split()
+        # Build regex for exact word match, case-insensitive
+        regex_pattern = r'\b(?:' + '|'.join(map(re.escape, words)) + r')\b'
+
+        # Filter products whose title contains any of the words exactly
+        search_results = Product.objects.filter(title__iregex=regex_pattern)
+
+    return render(request, 'app/search_results.html', {'search_results': search_results, 'query': query})

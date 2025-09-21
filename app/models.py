@@ -5,11 +5,17 @@ from django.core.validators import MaxValueValidator,MinValueValidator
 
 
 class Customer (models.Model):
-    user = models.ForeignKey(User, unique=True, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-    phone_no = models.CharField(max_length=100)
-    email = models.EmailField(max_length=100)
-    address = models.CharField(max_length=100)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100, blank=True)          # Full name
+    phone_no = models.CharField(max_length=15, blank=True)
+    email = models.EmailField(blank=True)
+    address = models.TextField(blank=True)
+    gender_choices = (
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+        ('Other', 'Other'),
+    )
+    gender = models.CharField(max_length=10, choices=gender_choices, blank=True)
 
     def __str__(self):
         return str(self.id)

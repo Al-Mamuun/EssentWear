@@ -41,10 +41,11 @@ class MySetPasswordForm(SetPasswordForm):
 class CustomerProfileForm(forms.ModelForm):
     class Meta:
         model = Customer
-        fields = ['name', 'phone_no', 'email', 'address']
+        fields = ['name', 'phone_no', 'email', 'address', 'gender']  # gender add kora holo
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'phone_no': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.TextInput(attrs={'class': 'form-control'}),
-            'address': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'address': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+            'gender': forms.Select(attrs={'class': 'form-select'}),  # dropdown select
         }

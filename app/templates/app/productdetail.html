@@ -1,47 +1,122 @@
 {% extends 'app/base.html' %}
 {% load static %}
 {% block title %}Product Detail{% endblock title %}
+
 {% block main-content %}
 <div class="container my-5">
- <div class="row">
-  <div class="col-sm-6 text-center align-self-center">
-   <img src="{{product.p_image.url}}" alt="" class="img-fluid img-thumbnail">
-  </div>
-  <div class="col-sm-5 offset-sm-1">
-   <h2>Product Title: {{product.title}}</h2>
-   <hr>
-   <ul>
-    <li>
-     {{ product.description}}
-    </li>
-   </ul> <br>
-   <h4>Tk. {{ product.discounted_price }} <small class="fw-light text-decoration-line-through">{{ product.selling_price }}</small></h4> <br>
+  <div class="row g-5">
+    <!-- Product Image -->
+    <div class="col-md-6 text-center">
+      <div class="card shadow-sm border-0">
+        <img src="{{ product.p_image.url }}" alt="{{ product.title }}" class="img-fluid rounded-3 p-3">
+      </div>
+    </div>
 
-   {% if request.user.is_authenticated %}
-    {% if item_already_in_cart %}
-       <a href="{% url 'showcart'%}" class="btn btn-warning shadow px-5 py-2 ms-4">Go to Cart</a>
-    {% else %}
-   <form action="/add-to-cart" class="d-inline">
-    <input type="hidden" name="prod_id" value="{{ product.id }}" id="prod_id">
-    <button type="submit" class="btn btn-primary shadow px-5 py-2">Add to Cart</button>
-   </form>
-    {% endif %}
-   {% endif %}
-    {% if not request.user.is_authenticated %}
-   <form action="/add-to-cart" class="d-inline">
-    <input type="hidden" name="prod_id" value="{{ product.id }}" id="prod_id">
-    <button type="submit" class="btn btn-primary shadow px-5 py-2">Add to Cart</button>
-   </form>
-   <a href="{% url 'showcart' %}" class="btn btn-danger shadow px-5 py-2 ms-4">Buy Now</a>
-   {% endif %}
+    <!-- Product Details -->
+    <div class="col-md-6">
+      <h2 class="fw-bold">{{ product.title }}</h2>
+      <hr>
+      <p class="text-muted">{{ product.description }}</p>
 
-   <h5 class="mt-5">Available Offers</h5>
-   <ul>
-    <li>Free delivery</li>
-    <li>10% instant cashback in mobile banking</li>
-    <li>No cost EMI. Standard EMI also available</li>
-   </ul>
+      <!-- Price -->
+      <h4 class="my-4">
+        <span class="text-primary fw-bold">Tk. {{ product.discounted_price }}</span>
+        {% if product.selling_price > product.discounted_price %}
+        <small class="text-muted text-decoration-line-through">{{ product.selling_price }}</small>
+        {% endif %}
+      </h4>
+
+      <!-- Add to Cart / Go to Cart Buttons -->
+      <div class="my-4">
+        {% if request.user.is_authenticated %}
+          {% if item_already_in_cart %}
+            <a href="{% url 'showcart' %}" class="btn btn-warning shadow px-5 py-2 me-3">Go to Cart</a>
+          {% else %}
+            <form action="/add-to-cart/" method="POST" class="d-inline">
+              {% csrf_token %}
+              <input type="hidden" name="prod_id" value="{{ product.id }}">
+              <button type="submit" class="btn btn-primary shadow px-5 py-2">Add to Cart</button>
+            </form>
+          {% endif %}
+        {% else %}
+          <form action="/add-to-cart/" method="POST" class="d-inline">
+            {% csrf_token %}
+            <input type="hidden" name="prod_id" value="{{ product.id }}">
+            <button type="submit" class="btn btn-primary shadow px-5 py-2">Add to Cart</button>
+          </form>
+          <a href="{% url 'showcart' %}" class="btn btn-danger shadow px-5 py-2 ms-3">Buy Now</a>
+        {% endif %}
+      </div>
+
+      <!-- Available Offers -->
+      <div class="mt-5">
+        <h5 class="fw-bold mb-3">Available Offers</h5>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i> Free delivery</li>
+          <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i> 10% instant cashback in mobile banking</li>
+          <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i> No cost EMI. Standard EMI also available</li>
+        </ul>
+      </div>
+    </div>
   </div>
- </div>
+
+  <!-- Payment Options -->
+  <div class="row mt-5">
+    <div class="col-12">
+      <div class="card shadow-sm">
+        <div class="card-body text-center">
+          <h5 class="mb-4">We Accept</h5>
+          <div class="d-flex flex-wrap justify-content-center gap-3">
+            <div class="payment-logo bkash">
+              <img src="{% static 'app/images/payavail/bk.PNG' %}" alt="bKash">
+            </div>
+            <div class="payment-logo nagad">
+              <img src="{% static 'app/images/payavail/ngd.PNG' %}" alt="Nagad">
+            </div>
+            <div class="payment-logo visa">
+              <i class="fab fa-cc-visa"></i>
+            </div>
+            <div class="payment-logo mastercard">
+              <i class="fab fa-cc-mastercard"></i>
+            </div>
+            <div class="payment-logo paypal">
+              <i class="fab fa-cc-paypal"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payment Logo Styles -->
+  <style>
+    .payment-logo {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .payment-logo img {
+      max-width: 60%;
+      max-height: 60%;
+      object-fit: contain;
+    }
+    .payment-logo:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    }
+    .bkash { background: #E2136E; }
+    .nagad { background: #F6931E; }
+    .rocket { background: #7B2CBF; }
+    .visa { background: #1A1F71; }
+    .mastercard { background: #EB001B; }
+    .paypal { background: #003087; }
+  </style>
 </div>
 {% endblock main-content %}

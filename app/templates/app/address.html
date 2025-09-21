@@ -1,33 +1,98 @@
 {% extends 'app/base.html' %}
 {% load static %}
 {% block title %}Address{% endblock title %}
+
 {% block main-content %}
 <div class="container my-5">
  <div class="row">
- <h3>Welcome <span class="text-capitalize">{{ request.user }}</h3>
+  <h3>Welcome <span class="text-capitalize">{{ request.user.username }}</span></h3>
+
+  <!-- Sidebar -->
   <div class="col-sm-2 border-end">
    <ul class="list-unstyled">
-    <li class="d-grid"><a href="{% url 'profile' %}" class="btn">Profile</a></li>
-    <li class="d-grid"><a href="{% url 'address' %}" class="btn {{ active }}">Address</a></li>
+    <li class="d-grid mb-2">
+      <a href="{% url 'profile' %}" class="btn btn-outline-primary">Profile</a>
+    </li>
+    <li class="d-grid">
+      <a href="{% url 'address' %}" class="btn btn-outline-primary active">Address</a>
+    </li>
    </ul>
   </div>
-  <div class="col-sm-9 offset-sm-1">
-   <div class="row">
-    {% for ad in add %}
-    <div class="col-sm-6">
-     <div class="card">
-      <div class="card-body">
-       <h3>Address {{ forloop.counter }}</h3>
-       <p>Name: {{ad.name}}</p>
-       <p>Phone No: {{ad.phone_no}}</p>
-       <p>Email: {{ad.email}}</p>
-       <p>Address: {{ad.address}}</p>
-      </div>
-     </div>
-    </div>
-    {% endfor %}
 
+  <!-- Address Section -->
+  <div class="col-sm-9 offset-sm-1">
+    <div class="row">
+      {% for ad in add %}
+      <div class="col-sm-6 mb-3">
+        <div class="card shadow-sm rounded-3">
+          <div class="card-body">
+            <h5 class="card-title">Address {{ forloop.counter }}</h5>
+            <p><strong>Name:</strong> {{ ad.name }}</p>
+            <p><strong>Phone No:</strong> {{ ad.phone_no }}</p>
+            <p><strong>Email:</strong> {{ ad.email }}</p>
+            <p><strong>Address:</strong> {{ ad.address }}</p>
+
+            <button class="btn btn-sm btn-primary mt-2" onclick="toggleEditForm({{ ad.id }})">
+              <i class="fas fa-edit me-1"></i> Edit Address
+            </button>
+
+            <!-- Inline Edit Form -->
+            <div id="editForm_{{ ad.id }}" style="display:none; margin-top:10px;">
+              <form action="" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="address_id" value="{{ ad.id }}">
+                <div class="mb-2">
+                  <label for="name_{{ ad.id }}" class="form-label">Name</label>
+                  <input type="text" name="name" id="name_{{ ad.id }}" class="form-control"
+                         value="{{ ad.name }}" required>
+                </div>
+                <div class="mb-2">
+                  <label for="phone_{{ ad.id }}" class="form-label">Phone No</label>
+                  <input type="text" name="phone_no" id="phone_{{ ad.id }}" class="form-control"
+                         value="{{ ad.phone_no }}">
+                </div>
+                <div class="mb-2">
+                  <label for="email_{{ ad.id }}" class="form-label">Email</label>
+                  <input type="email" name="email" id="email_{{ ad.id }}" class="form-control"
+                         value="{{ ad.email }}" required>
+                </div>
+                <div class="mb-2">
+                  <label for="address_{{ ad.id }}" class="form-label">Address</label>
+                  <textarea name="address" id="address_{{ ad.id }}" class="form-control" rows="2">{{ ad.address }}</textarea>
+                </div>
+                <button type="submit" class="btn btn-success btn-sm mt-2">Save Changes</button>
+                <button type="button" class="btn btn-secondary btn-sm mt-2" onclick="toggleEditForm({{ ad.id }})">Cancel</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+        <p>No addresses found.</p>
+      {% endfor %}
+    </div>
+
+    <!-- Messages -->
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} mt-3 shadow-sm rounded-3">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
   </div>
  </div>
 </div>
+
+<script>
+function toggleEditForm(id) {
+  let form = document.getElementById('editForm_' + id);
+  if(form.style.display === 'none') {
+    form.style.display = 'block';
+    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } else {
+    form.style.display = 'none';
+  }
+}
+</script>
 {% endblock main-content %}
