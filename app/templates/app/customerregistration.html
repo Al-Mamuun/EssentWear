@@ -1,0 +1,95 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Customer Registration{% endblock title %}
+{% block main-content %}
+<style>
+  /* Essentwear Style Customization */
+  .auth-card {
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    background: #fff;
+  }
+  .auth-title {
+    font-weight: 700;
+    color: #222;
+    letter-spacing: 0.5px;
+  }
+  .auth-btn {
+    background: linear-gradient(135deg, #ff6a6a, #d63384);
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    transition: 0.3s ease;
+  }
+  .auth-btn:hover {
+    background: linear-gradient(135deg, #d63384, #ff6a6a);
+    transform: translateY(-2px);
+  }
+  .form-label {
+    font-weight: 500;
+    color: #333;
+  }
+  .login-link {
+    color: #d63384;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .login-link:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-5 col-md-7 col-sm-10">
+      <div class="card auth-card p-4">
+        <div class="card-body">
+          <h2 class="text-center auth-title mb-4">Create Account</h2>
+          <p class="text-center text-muted mb-4">Join Essentwear and start shopping with style!</p>
+          
+          <!-- Messages -->
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+
+          <form action="" method="post" novalidate>
+            {% csrf_token %}
+            {% for f in form %}
+              <div class="mb-3">
+                <label class="form-label">{{ f.label }}</label>
+                {{ f }}
+                {% if f.errors %}
+                  <div class="text-danger small mt-1">{{ f.errors|striptags }}</div>
+                {% endif %}
+              </div>
+            {% endfor %}
+
+            <!-- Non-field errors -->
+            {% if form.non_field_errors %}
+              {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">{{ error }}</div>
+              {% endfor %}
+            {% endif %}
+
+            <div class="d-grid mt-4">
+              <button type="submit" class="btn auth-btn btn-lg rounded-pill shadow-sm">Sign Up</button>
+            </div>
+          </form>
+
+          <div class="text-center mt-4">
+            <small class="text-muted">Already have an account?
+              <a href="{% url 'login' %}" class="login-link">Login Now</a>
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock main-content %}

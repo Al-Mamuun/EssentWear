@@ -1,0 +1,158 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Alice Chatbot{% endblock title %}
+
+{% block main-content %}
+
+<style>
+/* Chat Container */
+.chat-container {
+    width: 450px;
+    max-width: 90%;
+    margin: 40px auto;
+    background: #f8f9ff;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Header */
+.chat-header {
+    background: #6a0dad;
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* Chat History */
+.chat-history {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background: #f4f4f4;
+}
+
+/* Messages */
+.user-message, .bot-message {
+    padding: 10px 15px;
+    margin: 5px 0;
+    border-radius: 20px;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+.user-message {
+    background: #d1e7dd;
+    align-self: flex-start;
+}
+
+.bot-message {
+    background: #6a0dad;
+    color: #fff;
+    align-self: flex-end;
+}
+
+/* Input Area */
+.chat-input-area {
+    display: flex;
+    padding: 10px;
+    background: #fff;
+    border-top: 1px solid #ddd;
+}
+
+#user-input {
+    flex: 1;
+    padding: 10px 15px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    outline: none;
+}
+
+#send-button {
+    background: #6a0dad;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin-left: 10px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+#send-button:hover {
+    background: #7e2edd;
+}
+</style>
+
+<div class="chat-container">
+    <div class="chat-header">
+        Alice 🤖
+    </div>
+
+    <div id="chat-history" class="chat-history">
+        <!-- Messages will appear here -->
+    </div>
+
+    <div class="chat-input-area">
+        <input type="text" id="user-input" placeholder="Type your message..." autofocus>
+        <button id="send-button">Send</button>
+    </div>
+</div>
+
+<script>
+const chatHistory = document.getElementById('chat-history');
+const userInput = document.getElementById('user-input');
+const sendButton = document.getElementById('send-button');
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        document.cookie.split(';').forEach(cookie => {
+            if (cookie.trim().startsWith(name + '=')) {
+                cookieValue = decodeURIComponent(cookie.trim().substring(name.length + 1));
+            }
+        });
+    }
+    return cookieValue;
+}
+
+function appendMessage(className, message) {
+    const msg = document.createElement('div');
+    msg.className = className;
+    msg.innerHTML = message;
+    chatHistory.appendChild(msg);
+    chatHistory.scrollTop = chatHistory.scrollHeight;
+}
+
+function sendUserMessage() {
+    const message = userInput.value.trim();
+    if (!message) return;
+
+    appendMessage('user-message', message);
+
+    const formData = new FormData();
+    formData.append('user_message', message);
+
+    fetch('/chatbot/', {
+        method: 'POST',
+        body: formData,
+        headers: { 'X-CSRFToken': getCookie('csrftoken') }
+    }).then(res => res.json())
+      .then(data => appendMessage('bot-message', data.bot_response))
+      .catch(err => console.error(err));
+
+    userInput.value = '';
+}
+
+userInput.addEventListener('keydown', e => { if (e.key === 'Enter') sendUserMessage(); });
+sendButton.addEventListener('click', sendUserMessage);
+</script>
+
+{% endblock main-content %}
