@@ -7,52 +7,58 @@
 <style>
 /* Chat Container */
 .chat-container {
-    width: 450px;
-    max-width: 90%;
-    margin: 40px auto;
-    background: #f8f9ff;
-    border-radius: 12px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    width: 480px;
+    max-width: 95%;
+    margin: 50px auto 80px; /* bottom margin for footer spacing */
+    background: #fff0f6; /* light pinkish background */
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* Header */
 .chat-header {
-    background: #6a0dad;
+    background: linear-gradient(90deg, #ff6eb4, #ff85c1);
     color: #fff;
-    padding: 15px;
+    padding: 18px;
     text-align: center;
-    font-size: 22px;
-    font-weight: bold;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 1px;
 }
 
 /* Chat History */
 .chat-history {
     flex: 1;
-    padding: 15px;
+    padding: 20px;
     overflow-y: auto;
-    background: #f4f4f4;
+    background: #fff0f6; /* light pinkish */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 /* Messages */
 .user-message, .bot-message {
-    padding: 10px 15px;
-    margin: 5px 0;
-    border-radius: 20px;
-    max-width: 80%;
+    padding: 12px 20px;
+    max-width: 75%;
     word-wrap: break-word;
+    border-radius: 25px;
+    font-size: 15px;
+    line-height: 1.4;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
 .user-message {
-    background: #d1e7dd;
+    background: #ffe0f0;
     align-self: flex-start;
 }
 
 .bot-message {
-    background: #6a0dad;
+    background: #ff6eb4;
     color: #fff;
     align-self: flex-end;
 }
@@ -60,34 +66,52 @@
 /* Input Area */
 .chat-input-area {
     display: flex;
-    padding: 10px;
+    padding: 15px;
     background: #fff;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #f0cce5;
 }
 
 #user-input {
     flex: 1;
-    padding: 10px 15px;
+    padding: 12px 20px;
     border-radius: 25px;
-    border: 1px solid #ccc;
+    border: 1px solid #ff85c1;
     font-size: 16px;
     outline: none;
+    transition: 0.3s;
+}
+
+#user-input:focus {
+    border-color: #ff6eb4;
+    box-shadow: 0 0 5px rgba(255,110,180,0.3);
 }
 
 #send-button {
-    background: #6a0dad;
+    background: linear-gradient(90deg, #ff6eb4, #ff85c1);
     color: #fff;
     border: none;
-    padding: 10px 20px;
+    padding: 12px 25px;
     margin-left: 10px;
     border-radius: 25px;
     cursor: pointer;
     font-size: 16px;
+    font-weight: 500;
     transition: 0.3s;
 }
 
 #send-button:hover {
-    background: #7e2edd;
+    background: linear-gradient(90deg, #ff85c1, #ff6eb4);
+    transform: translateY(-2px);
+}
+
+/* Scrollbar styling */
+.chat-history::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-history::-webkit-scrollbar-thumb {
+    background: rgba(255,110,180,0.4);
+    border-radius: 3px;
 }
 </style>
 
@@ -102,7 +126,7 @@
 
     <div class="chat-input-area">
         <input type="text" id="user-input" placeholder="Type your message..." autofocus>
-        <button id="send-button">Send</button>
+        <button id="send-button"><i class="fas fa-paper-plane me-1"></i> Send</button>
     </div>
 </div>
 
