@@ -87,43 +87,65 @@
 
 <!-- Payment Info Section -->
 <div class="container my-5">
-  <h2 class="section-title text-center mb-4">Payment Options</h2>
-  <div class="row g-3">
+  <h2 class="text-center mb-4" style="font-weight: 700; color: #d63384;">Payment Options</h2>
+  <div class="row g-3 justify-content-center">
+    
     <div class="col-6 col-md-3">
-      <div class="card h-100 border-0 shadow-sm payment-card">
+      <div class="card h-100 border-0 shadow-sm" 
+           style="border-radius: 15px; transition: transform 0.3s ease, box-shadow 0.3s ease;"
+           onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.15)';" 
+           onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.1)';">
         <div class="card-body text-center p-3">
-          <img src="{% static 'app/images/payavail/bk.PNG' %}" alt="bkash" class="img-fluid payment-img">
-          <p class="mt-2 mb-0 small">bKash Payment</p>
+          <img src="{% static 'app/images/payavail/bk.PNG' %}" alt="bkash" 
+               style="max-height: 50px; object-fit: contain; margin-bottom: 10px;">
+          <p class="mb-0" style="font-size: 0.9rem; font-weight: 500; color: #333;">bKash Payment</p>
         </div>
       </div>
     </div>
+
     <div class="col-6 col-md-3">
-      <div class="card h-100 border-0 shadow-sm payment-card">
+      <div class="card h-100 border-0 shadow-sm" 
+           style="border-radius: 15px; transition: transform 0.3s ease, box-shadow 0.3s ease;"
+           onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.15)';" 
+           onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.1)';">
         <div class="card-body text-center p-3">
-          <img src="{% static 'app/images/payavail/ngd.PNG' %}" alt="Nagad" class="img-fluid payment-img">
-          <p class="mt-2 mb-0 small">Nagad Payment</p>
+          <img src="{% static 'app/images/payavail/ngd.PNG' %}" alt="Nagad" 
+               style="max-height: 50px; object-fit: contain; margin-bottom: 10px;">
+          <p class="mb-0" style="font-size: 0.9rem; font-weight: 500; color: #333;">Nagad Payment</p>
         </div>
       </div>
     </div>
+
     <div class="col-6 col-md-3">
-      <div class="card h-100 border-0 shadow-sm payment-card">
+      <div class="card h-100 border-0 shadow-sm" 
+           style="border-radius: 15px; transition: transform 0.3s ease, box-shadow 0.3s ease;"
+           onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.15)';" 
+           onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.1)';">
         <div class="card-body text-center p-3">
-          <img src="{% static 'app/images/payavail/cod.JPG' %}" alt="Cash on Delivery" class="img-fluid payment-img">
-          <p class="mt-2 mb-0 small">Cash on Delivery</p>
+          <img src="{% static 'app/images/payavail/cod.JPG' %}" alt="Cash on Delivery" 
+               style="max-height: 50px; object-fit: contain; margin-bottom: 10px;">
+          <p class="mb-0" style="font-size: 0.9rem; font-weight: 500; color: #333;">Cash on Delivery</p>
         </div>
       </div>
     </div>
+
     <div class="col-6 col-md-3">
-      <div class="card h-100 border-0 shadow-sm payment-card">
+      <div class="card h-100 border-0 shadow-sm" 
+           style="border-radius: 15px; transition: transform 0.3s ease, box-shadow 0.3s ease;"
+           onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.15)';" 
+           onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.1)';">
         <div class="card-body text-center p-3">
-          <img src="{% static 'app/images/payavail/emi.JPG' %}" alt="EMI" class="img-fluid payment-img">
-          <p class="mt-2 mb-0 small">Easy EMI Options</p>
+          <img src="{% static 'app/images/payavail/emi.JPG' %}" alt="EMI" 
+               style="max-height: 50px; object-fit: contain; margin-bottom: 10px;">
+          <p class="mb-0" style="font-size: 0.9rem; font-weight: 500; color: #333;">Easy EMI Options</p>
         </div>
       </div>
     </div>
+
   </div>
 </div>
 <!-- End Payment Info Section -->
+
 
 <!-- 2nd Product Slider -->
 <div class="container mb-5">
@@ -173,16 +195,24 @@
 <div class="container my-5">
   <div class="row justify-content-center">
     <div class="col-md-8">
-      <div class="card border-0 shadow-sm bg-light-pink">
+      <div class="card border-0 shadow-sm" style="background: linear-gradient(135deg, #ffe6f0, #ffd6e8); border-radius: 20px; transition: transform 0.3s ease, box-shadow 0.3s ease;">
         <div class="card-body p-4 text-center">
-          <h3 class="card-title mb-3">Subscribe to Our Newsletter</h3>
-          <p class="card-text mb-4">Get updates on new products and special offers</p>
+          <h3 class="mb-3" style="color: #d63384; font-weight: 700; font-size: 1.8rem;">Subscribe to Our Newsletter</h3>
+          <p class="mb-4" style="color: #555; font-size: 1.1rem;">Get updates on new products and special offers</p>
           <form class="row g-2 justify-content-center">
             <div class="col-md-8">
-              <input type="email" class="form-control form-control-lg" placeholder="Enter your email address">
+              <input type="email" class="form-control form-control-lg" placeholder="Enter your email address" 
+                     style="border-radius: 50px; padding: 15px 20px; border: 1px solid #d63384; transition: all 0.3s ease;"
+                     onfocus="this.style.boxShadow='0 0 10px rgba(214,51,132,0.3)'; this.style.borderColor='#d63384';" 
+                     onblur="this.style.boxShadow='none';">
             </div>
             <div class="col-md-4">
-              <button type="submit" class="btn btn-pink btn-lg w-100">Subscribe</button>
+              <button type="submit" class="btn btn-lg w-100" 
+                      style="background-color: #d63384; border-radius: 50px; padding: 12px 25px; font-weight: 500; color: #fff; transition: all 0.3s ease;"
+                      onmouseover="this.style.backgroundColor='#b02a6b'; this.style.transform='translateY(-2px)';" 
+                      onmouseout="this.style.backgroundColor='#d63384'; this.style.transform='translateY(0)';">
+                Subscribe
+              </button>
             </div>
           </form>
         </div>
@@ -190,6 +220,7 @@
     </div>
   </div>
 </div>
+
 <!-- End Newsletter Section -->
 {% endblock main-content %}
 
