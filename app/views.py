@@ -106,25 +106,30 @@ def minus_cart(request):
   return JsonResponse(data)
 
 def remove_cart(request):
- if request.method == 'GET':
-  prod_id = request.GET['prod_id']
-  c = Cart.objects.get( Q (product = prod_id) & Q (user=request.user))
+    if request.method == 'GET':
+        prod_id = request.GET.get('prod_id')
+        try:
+            c = Cart.objects.get(Q(product_id=prod_id) & Q(user=request.user))
+            c.delete()
+        except Cart.DoesNotExist:
+            return JsonResponse({'error': 'Cart item not found'}, status=404)
 
-  c.delete()
-  amount = 0.0
-  shiiping_amount = 60.0
-  total_amount = 0.0
-  cart_product = [p for p in Cart.objects.all() if p.user ==request.user]
-  if cart_product:
-   for p in cart_product:
-    tempamount = (p.quantity * p.product.discounted_price)
-    amount += tempamount
-    total_amount = amount + shiiping_amount
-  data = {
-     'amount': amount,
-     'totalamount': total_amount
-    }
-  return JsonResponse(data)
+        amount = 0.0
+        shipping_amount = 60.0
+        total_amount = 0.0
+
+        cart_product = Cart.objects.filter(user=request.user)
+        if cart_product:
+            for p in cart_product:
+                tempamount = (p.quantity * p.product.discounted_price)
+                amount += tempamount
+            total_amount = amount + shipping_amount
+
+        data = {
+            'amount': amount,
+            'totalamount': total_amount
+        }
+        return JsonResponse(data)
 
 
 
