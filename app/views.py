@@ -68,7 +68,7 @@ def plus_cart(request):
   c.quantity += 1
   c.save()
   amount = 0.0
-  shiiping_amount = 60.0
+  shiiping_amount = 100.0
   total_amount = 0.0
   cart_product = [p for p in Cart.objects.all() if p.user ==request.user]
   if cart_product:
@@ -90,7 +90,7 @@ def minus_cart(request):
   c.quantity -= 1
   c.save()
   amount = 0.0
-  shiiping_amount = 60.0
+  shiiping_amount = 100.0
   total_amount = 0.0
   cart_product = [p for p in Cart.objects.all() if p.user ==request.user]
   if cart_product:
@@ -115,7 +115,7 @@ def remove_cart(request):
             return JsonResponse({'error': 'Cart item not found'}, status=404)
 
         amount = 0.0
-        shipping_amount = 60.0
+        shipping_amount = 100.0
         total_amount = 0.0
 
         cart_product = Cart.objects.filter(user=request.user)
