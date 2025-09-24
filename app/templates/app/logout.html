@@ -7,16 +7,26 @@
 <div class="container my-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="card text-center shadow-sm p-4">
+            <div class="card text-center shadow-sm p-4" style="border-radius: 15px; border: none; background-color: #ffe4f0;">
                 <div class="card-body">
-                    <i class="fas fa-sign-out-alt fa-3x mb-3 text-primary"></i>
-                    <h3 class="card-title mb-3">You have been logged out</h3>
+                    <i class="fas fa-sign-out-alt fa-3x mb-3 text-pink"></i>
+                    <h3 class="card-title mb-3 text-pink">You have been logged out</h3>
                     <p class="card-text mb-4">Thank you for visiting. See you again soon!</p>
-                    <a href="{% url 'home' %}" class="btn btn-primary"><i class="fas fa-home me-2"></i>Go to Home</a>
-                    <a href="{% url 'login' %}" class="btn btn-outline-primary ms-2"><i class="fas fa-sign-in-alt me-2"></i>Login Again</a>
+                    <a href="{% url 'home' %}" class="btn" style="background-color: #f497c1; color: white; border-radius: 8px; padding: 8px 20px;">
+                        <i class="fas fa-home me-2"></i>Go to Home
+                    </a>
+                    <a href="{% url 'login' %}" class="btn" style="border: 2px solid #f497c1; color: #f497c1; border-radius: 8px; padding: 8px 20px; margin-left: 10px;">
+                        <i class="fas fa-sign-in-alt me-2"></i>Login Again
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .text-pink { color: #d63384; }
+    .btn:hover { opacity: 0.9; }
+    .card:hover { transform: translateY(-3px); transition: 0.3s; }
+</style>
 {% endblock main-content %}
