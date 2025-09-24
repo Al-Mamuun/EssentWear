@@ -401,3 +401,7 @@ def search_products(request):
         search_results = Product.objects.filter(title__iregex=regex_pattern)
 
     return render(request, 'app/search_results.html', {'search_results': search_results, 'query': query})
+
+
+def mamun(request):
+    return render(request, 'app/mamun.html')

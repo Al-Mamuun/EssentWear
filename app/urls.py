@@ -44,6 +44,8 @@ urlpatterns = [
     path('orders/', views.orders, name='orders'),
     path('chatbot/', views.chatbot, name='chatbot'),
     path('search/', views.search_products, name='search_products'),
+    
+    path('mamun/', views.mamun, name='mamun')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

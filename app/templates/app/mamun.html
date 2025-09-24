@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Abdullah Al Mamun - Portfolio</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@200;400;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <style>
+    /* Global Reset */
+    * {
+      padding: 0;
+      margin: 0;
+      font-family: 'Josefin Sans', sans-serif;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      overflow-x: hidden;
+    }
+
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      width: 100%;
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                  url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      color: white;
+    }
+
+    /* Navbar */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 25px 8%;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      transition: 0.5s;
+      background: rgba(0, 0, 0, 0.8);
+    }
+
+    nav.scrolled {
+      background: rgba(0, 0, 0, 0.95);
+      padding: 15px 8%;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo {
+      color: #fff;
+      font-size: 35px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    span {
+      color: #f9004d;
+    }
+
+    nav ul {
+      list-style: none;
+    }
+
+    nav ul li {
+      display: inline-block;
+      padding: 10px 20px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+      position: relative;
+    }
+
+    nav ul li a:after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      background: #f9004d;
+      left: 0;
+      bottom: -5px;
+      transition: 0.3s;
+    }
+
+    nav ul li a:hover:after {
+      width: 100%;
+    }
+
+    nav ul li a:hover {
+      color: #f9004d;
+    }
+
+    .btn {
+      background: #f9004d;
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 10px 25px;
+      border-radius: 30px;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      transform: scale(1.1);
+      background: #fff;
+      color: #f9004d;
+    }
+
+    .menu-toggle {
+      display: none;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    /* Hero Content */
+    .content {
+      position: absolute;
+      top: 50%;
+      left: 8%;
+      transform: translateY(-50%);
+      max-width: 600px;
+    }
+
+    h1 {
+      font-size: 70px;
+      margin: 20px 0;
+      color: #fff;
+      line-height: 1.1;
+    }
+
+    h3 {
+      font-size: 25px;
+      margin-bottom: 40px;
+      color: #f9004d;
+    }
+
+    h4 {
+      font-size: 20px;
+      letter-spacing: 2px;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    /* Newsletter */
+    .newslatter form {
+      width: 380px;
+      max-width: 100%;
+      position: relative;
+    }
+
+    .newslatter form input[type="email"] {
+      width: 100%;
+      padding: 14px 130px 14px 15px;
+      border: 2px solid #f9004d;
+      border-radius: 30px;
+      outline: none;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .newslatter form input[type="email"]::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .newslatter form input[type="submit"] {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      padding: 10px 25px;
+      border-radius: 30px;
+      border: none;
+      background: #f9004d;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .newslatter form input[type="submit"]:hover {
+      background: transparent;
+      border: 2px solid #f9004d;
+      color: #f9004d;
+    }
+
+    /* About Section */
+    .about {
+      background: #191919;
+      padding: 100px 0;
+    }
+
+    .about img {
+      width: 430px;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .main {
+      max-width: 1130px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      flex-wrap: wrap;
+    }
+
+    .about-text {
+      max-width: 550px;
+      margin-top: 30px;
+    }
+
+    .about-text h2 {
+      font-size: 60px;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+
+    .about-text h5 {
+      font-size: 22px;
+      letter-spacing: 2px;
+      margin-bottom: 25px;
+      color: #fff;
+    }
+
+    .about-text h5 span {
+      color: #f9004d;
+    }
+
+    .about-text p {
+      font-size: 18px;
+      color: #ccc;
+      line-height: 28px;
+      margin-bottom: 45px;
+    }
+
+    button {
+      padding: 12px 30px;
+      border-radius: 30px;
+      border: none;
+      background: #f9004d;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: transparent;
+      border: 2px solid #f9004d;
+      color: #f9004d;
+    }
+
+    /* Services Section */
+    .service {
+      background: #101010;
+      padding: 100px 0;
+      text-align: center;
+    }
+
+    .title h2 {
+      font-size: 60px;
+      color: #fff;
+      margin-bottom: 50px;
+      position: relative;
+    }
+
+    .title h2:after {
+      content: '';
+      position: absolute;
+      width: 100px;
+      height: 3px;
+      background: #f9004d;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .box {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: #191919;
+      border-radius: 20px;
+      padding: 30px 20px;
+      margin: 15px;
+      width: 320px;
+      text-align: center;
+      transition: 0.3s;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(249, 0, 77, 0.2);
+    }
+
+    .card i {
+      font-size: 50px;
+      margin-bottom: 20px;
+      color: #f9004d;
+    }
+
+    .card h5 {
+      font-size: 22px;
+      color: #fff;
+      margin-bottom: 15px;
+    }
+
+    .card p {
+      font-size: 16px;
+      color: #ccc;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .card .button {
+      padding: 8px 20px;
+      border-radius: 30px;
+      background: #f9004d;
+      color: #fff;
+      text-decoration: none;
+      transition: 0.3s;
+      display: inline-block;
+    }
+
+    .card .button:hover {
+      background: transparent;
+      border: 2px solid #f9004d;
+      color: #f9004d;
+    }
+
+    /* Contact Me */
+    .contact-me {
+      background: #191919;
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    .contact-me p {
+      font-size: 28px;
+      color: #fff;
+      margin-bottom: 25px;
+    }
+
+    .button-two {
+      padding: 12px 30px;
+      border-radius: 30px;
+      background: #f9004d;
+      color: #fff;
+      text-decoration: none;
+      transition: 0.3s;
+      display: inline-block;
+    }
+
+    .button-two:hover {
+      background: transparent;
+      border: 2px solid #f9004d;
+      color: #f9004d;
+    }
+
+    /* Footer */
+    footer {
+      background: #101010;
+      padding: 50px 20px;
+      text-align: center;
+    }
+
+    footer p {
+      color: #fff;
+      margin-bottom: 20px;
+    }
+
+    .social {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .social a {
+      width: 45px;
+      height: 45px;
+      margin: 0 10px;
+      border-radius: 50%;
+      background: #f9004d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      transition: 0.3s;
+    }
+
+    .social a:hover {
+      transform: scale(1.2);
+      background: #fff;
+      color: #f9004d;
+    }
+
+    .end {
+      font-size: 14px;
+      color: #f9004d;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 992px) {
+      .content {
+        left: 5%;
+        max-width: 90%;
+      }
+      
+      h1 {
+        font-size: 50px;
+      }
+      
+      .about img {
+        width: 350px;
+      }
+      
+      .main {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 768px) {
+      nav ul {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        flex-direction: column;
+        text-align: center;
+        padding: 20px 0;
+      }
+      
+      nav ul.show {
+        display: flex;
+      }
+      
+      nav ul li {
+        display: block;
+        padding: 15px 0;
+      }
+      
+      .menu-toggle {
+        display: block;
+        color: white;
+      }
+      
+      .btn {
+        display: none;
+      }
+      
+      h1 {
+        font-size: 40px;
+      }
+      
+      h3 {
+        font-size: 20px;
+      }
+      
+      .about-text h2 {
+        font-size: 40px;
+      }
+      
+      .title h2 {
+        font-size: 40px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .content {
+        left: 5%;
+        max-width: 90%;
+      }
+      
+      h1 {
+        font-size: 35px;
+      }
+      
+      h4 {
+        font-size: 18px;
+      }
+      
+      .newslatter form {
+        width: 100%;
+      }
+      
+      .about img {
+        width: 100%;
+        max-width: 300px;
+      }
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: fadeInUp 1s ease-out;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Hero Section -->
+  <div class="hero">
+    <nav id="navbar">
+      <h2 class="logo">Port<span>folio</span></h2>
+      <div class="menu-toggle">
+        <i class="fas fa-bars"></i>
+      </div>
+      <ul id="nav-menu">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <a href="#contact" class="btn">Hire Me</a>
+    </nav>
+
+    <div class="content fade-in">
+      <h4>Hello, My name is</h4>
+      <h1>Abdullah Al Mamun</h1>
+      <h3>I'm a Web Developer.</h3>
+      <div class="newslatter">
+        <form id="newsletter-form">
+          <input type="email" placeholder="Enter Your Email" required>
+          <input type="submit" value="Let's Start">
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- About Section -->
+  <section class="about" id="about">
+    <div class="main">
+      <img src="{% static 'app/images/Img3.jpeg' %}" alt="About Image">
+      <div class="about-text fade-in">
+        <h2>About Me</h2>
+        <h5>Developer <span>& Designer</span></h5>
+        <p>
+          I am a front-end web developer with a passion for creating beautiful and functional websites. 
+          I provide clean code and pixel-perfect design. I make websites more interactive with animations 
+          and ensure responsive design that works across all devices. With expertise in modern web technologies, 
+          I bring ideas to life with creativity and precision.
+        </p>
+        <button type="button">Let's Talk</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <div class="service" id="services">
+    <div class="title">
+      <h2>My Services</h2>
+    </div>
+    <div class="box">
+      <div class="card fade-in">
+        <i class="fas fa-code"></i>
+        <h5>Web Development</h5>
+        <div class="pra">
+          <p>I build fast, responsive, and user-friendly websites that run smoothly across all devices using the latest technologies and best practices.</p>
+          <p style="text-align:center;">
+            <a href="#" class="button">Read More</a>
+          </p>
+        </div>
+      </div>
+
+      <div class="card fade-in">
+        <i class="fas fa-paint-brush"></i>
+        <h5>Web Design</h5>
+        <div class="pra">
+          <p>I design modern, creative, and engaging website layouts with clean UI & UX principles that enhance user experience.</p>
+          <p style="text-align:center;">
+            <a href="#" class="button">Read More</a>
+          </p>
+        </div>
+      </div>
+
+      <div class="card fade-in">
+        <i class="fas fa-mobile-alt"></i>
+        <h5>Responsive Design</h5>
+        <div class="pra">
+          <p>Ensuring your website is accessible, mobile-friendly, and looks perfect on all screen sizes from desktop to mobile.</p>
+          <p style="text-align:center;">
+            <a href="#" class="button">Read More</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Me -->
+  <div class="contact-me" id="contact">
+    <p>Let me create a beautiful website for you.</p>
+    <a class="button-two" href="#">Hire Me</a>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>Abdullah Al Mamun</p>
+    <div class="social">
+      <a href="#"><i class="fab fa-facebook-f"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-linkedin"></i></a>
+      <a href="#"><i class="fab fa-github"></i></a>
+    </div>
+    <p class="end">© 2025 Abdullah Al Mamun. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // Mobile menu toggle
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    
+    menuToggle.addEventListener('click', function() {
+      navMenu.classList.toggle('show');
+    });
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 80,
+            behavior: 'smooth'
+          });
+          
+          // Close mobile menu after clicking a link
+          if (navMenu.classList.contains('show')) {
+            navMenu.classList.remove('show');
+          }
+        }
+      });
+    });
+
+    // Newsletter form submission
+    const newsletterForm = document.getElementById('newsletter-form');
+    newsletterForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = this.querySelector('input[type="email"]').value;
+      alert(`Thank you for subscribing with ${email}! I'll be in touch soon.`);
+      this.reset();
+    });
+
+    // Fade-in animation on scroll
+    const fadeElements = document.querySelectorAll('.fade-in');
+    
+    const fadeInOnScroll = function() {
+      fadeElements.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const elementVisible = 150;
+        
+        if (elementTop < window.innerHeight - elementVisible) {
+          element.style.opacity = "1";
+          element.style.transform = "translateY(0)";
+        }
+      });
+    };
+    
+    // Set initial state for fade elements
+    fadeElements.forEach(element => {
+      element.style.opacity = "0";
+      element.style.transform = "translateY(30px)";
+      element.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+    });
+    
+    window.addEventListener('scroll', fadeInOnScroll);
+    window.addEventListener('load', fadeInOnScroll);
+  </script>
+</body>
+</html>
