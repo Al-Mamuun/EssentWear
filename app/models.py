@@ -20,16 +20,9 @@ class Customer (models.Model):
     def __str__(self):
         return str(self.id)
 
-SIZE_CHOICES = (
-    ('S', 'small'),
-    ('M', 'medium'),
-    ('L', 'large'),
-    ('XL', 'extra large'),
-)
-
 CATEGORY_CHOICES = (
-    ('F', 'FOOTBALL'),
-    ('C', 'CRICKET'),
+    ('M', 'Men'),
+    ('W', 'Women'),
 )
 
 class Product(models.Model):
