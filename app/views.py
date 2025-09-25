@@ -408,3 +408,15 @@ def search_products(request):
 
 def mamun(request):
     return render(request, 'app/mamun.html')
+
+def faq(request):
+    return render(request, 'app/faq.html')
+
+def return_policy(request):
+    return render(request, 'app/return_policy.html')
+
+def size_guide(request):
+    return render(request, 'app/size_guide.html')
+
+def shipping_info(request):
+    return render(request, 'app/shipping_info.html')

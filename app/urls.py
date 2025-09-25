@@ -9,7 +9,6 @@ urlpatterns = [
     path('', views.Productview.as_view(), name="home"),
     path('product-detail/<int:pk>', views.ProductDeatilView.as_view(), name='product-detail'),
 
-    # path('buy-now/', views.buynow, name='buy-now'),
     path('add-to-cart/', views.add_to_cart, name='add-to-cart'),
     path('cart/', views.show_cart, name='showcart'),
     path('pluscart/', views.plus_cart,),
@@ -45,7 +44,13 @@ urlpatterns = [
     path('chatbot/', views.chatbot, name='chatbot'),
     path('search/', views.search_products, name='search_products'),
 
-    path('mamun/', views.mamun, name='mamun')
+    path('mamun/', views.mamun, name='mamun'),
+    
+    path('faq/', views.faq, name='faq'),
+    path('return-policy/', views.return_policy, name='return_policy'),
+    path('size-guide/', views.size_guide, name='size_guide'),
+    path('shipping-info/', views.shipping_info, name='shipping_info')
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

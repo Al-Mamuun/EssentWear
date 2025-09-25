@@ -1,0 +1,52 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}Size Guide{% endblock title %}
+
+{% block main-content %}
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm p-4" style="border-radius: 12px; background-color:#ffe4f0;">
+        <h3 class="text-pink mb-3">Size Guide</h3>
+        <p>Use the chart below to find your perfect fit:</p>
+        <table class="table table-bordered text-center">
+          <thead style="background-color:#f8c8dc;">
+            <tr>
+              <th>Size</th>
+              <th>Bust (in)</th>
+              <th>Waist (in)</th>
+              <th>Hip (in)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>S</td>
+              <td>34–35</td>
+              <td>26–27</td>
+              <td>36–37</td>
+            </tr>
+            <tr>
+              <td>M</td>
+              <td>36–37</td>
+              <td>28–29</td>
+              <td>38–39</td>
+            </tr>
+            <tr>
+              <td>L</td>
+              <td>38–39</td>
+              <td>30–31</td>
+              <td>40–41</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .text-pink { color: #d63384; }
+  table { background: #fff; border-radius: 10px; overflow: hidden; }
+</style>
+{% endblock main-content %}
