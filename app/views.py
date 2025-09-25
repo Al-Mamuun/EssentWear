@@ -7,17 +7,16 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-# from django.templatetags.static import static
-# from static.app import product_img
 import re
 
+
+# ----------------- Product Views -----------------
 class Productview(View):
  def get(self, request):
   football = Product.objects.filter(category='F')
   cricket = Product.objects.filter(category='C')
   jwellery = Product.objects.filter(category='J')
   return render(request, 'app/home.html', { 'football': football,'cricket' : cricket, 'jwellery': jwellery })
-
 
 class ProductDeatilView(View):
  def get(self, request, pk):
@@ -27,21 +26,19 @@ class ProductDeatilView(View):
     item_already_in_cart = Cart.objects.filter(Q(product=product.id) & Q(user=request.user)).exists()
   return render(request, 'app/productdetail.html', {'product': product, 'item_already_in_cart':item_already_in_cart})
 
+
+# ----------------- Cart Views -----------------
 @login_required
 def add_to_cart(request):
     if request.method == 'POST':
         product_id = request.POST.get('prod_id')
         product = get_object_or_404(Product, id=product_id)
-
-        # Cart এ add বা quantity update
         cart_item, created = Cart.objects.get_or_create(user=request.user, product=product)
         if not created:
             cart_item.quantity += 1
             cart_item.save()
-
         return redirect('showcart')  
     else:
-
         next_url = request.GET.get('next')
         if next_url:
             return redirect(next_url)
@@ -135,8 +132,7 @@ def remove_cart(request):
         }
         return JsonResponse(data)
 
-
-
+# ----------------- Profile Views -----------------
 @method_decorator(login_required, name='dispatch')
 class ProfileView(View):
     def get(self, request):
@@ -199,8 +195,6 @@ def address(request):
     if request.method == "POST":
         address_id = request.POST.get("address_id")
         address_obj = get_object_or_404(Customer, id=address_id, user=request.user)
-
-        # Update fields from POST data
         address_obj.name = request.POST.get("name")
         address_obj.phone_no = request.POST.get("phone_no")
         address_obj.email = request.POST.get("email")
@@ -214,7 +208,6 @@ def address(request):
 
 @login_required
 def orders(request):
-    # ✅ সব orders
     order_placed = OrderPlaced.objects.filter(user=request.user).order_by('-id')
     return render(request, 'app/orders.html', {'order_placed': order_placed})
 
@@ -224,6 +217,7 @@ class change_password(View):
   messages.success(request, 'Congratulations!! Changed Successfully')
   return render(request, 'app/changepassword.html', {'form': form})
 
+# ----------------- Category Views -----------------
 def football(request, data = None):
  #if data == None:
   football = Product.objects.filter(category='F')
@@ -240,12 +234,7 @@ def jwellery(request, data = None):
   return render(request, 'app/jwellery.html', {'jwellerys': jwellery})
 
 
-# def buynow(request):
-#  return render(request, 'app/buy-now.html')
-
-def contactus(request):
-  return render(request, 'app/contact.html')
-
+# ----------------- Authentication Views -----------------
 class CustomerRegistrationView(View):
  def get (self, request):
   form = CustomerRegistrationForm()
@@ -286,12 +275,7 @@ def order_done(request):
     c.delete()
   return redirect("orders")
 
-def tryon(request):
-    return render(request, 'app/try.html')
-
-
-from django.http import JsonResponse
-
+# ----------------- Other Views -----------------
 def chatbot(request):
     if request.method == 'POST':
         user_message = request.POST.get('user_message')
@@ -400,6 +384,13 @@ def search_products(request):
 
     return render(request, 'app/search_results.html', {'search_results': search_results, 'query': query})
 
+# ----------------- Static/Other Pages -----------------
+
+def contactus(request):
+  return render(request, 'app/contact.html')
+
+def tryon(request):
+    return render(request, 'app/try.html')
 
 def mamun(request):
     return render(request, 'app/mamun.html')
