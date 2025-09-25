@@ -1,18 +1,18 @@
 {% extends 'app/base.html' %}
 {% load static %}
+
 {% block title %}Home{% endblock title %}
 
 {% block banner_slider %}
-<!--Banner Slider-->
- <div id="carouselExampleControls" class="container carousel slide" data-bs-ride="carousel">
-   <div class="carousel-inner">
+<!-- Banner Slider -->
+<div id="carouselExampleControls" class="container carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
     <div class="carousel-item active">
-      <a href="{% url 'chatbot' %}"><img  src="{% static 'app/images/banner/banner-1.jpg' %}" class="d-block w-100" alt="..."></a>
+      <a href="{% url 'chatbot' %}"><img src="{% static 'app/images/banner/banner-1.jpg' %}" class="d-block w-100" alt="..."></a>
     </div>
     <div class="carousel-item">
-        <a href="{% url 'chatbot' %}"><img src="{% static 'app/images/banner/razy.png' %}" class="d-block w-100" alt="..."></a>
+      <a href="{% url 'chatbot' %}"><img src="{% static 'app/images/banner/razy.png' %}" class="d-block w-100" alt="..."></a>
     </div>
-
   </div> 
   <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-bs-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -23,11 +23,9 @@
     <span class="visually-hidden">Next</span>
   </a>
 </div>
-<!-- End Banner Slider -->
 {% endblock banner_slider %}
 
 {% block livesale %}
-<!-- Live Sale Section -->
 <div class="container my-4">
   <div class="row bg-light-pink text-center p-4 text-dark rounded shadow-sm">
     <div class="col-12">
@@ -37,11 +35,11 @@
     </div>
   </div>
 </div>
-<!-- End Live Sale Section -->
 {% endblock livesale %}
 
 {% block main-content %}
-<!-- 1st Product Slider -->
+
+<!-- ===== Men Collection ===== -->
 <div class="container mb-5">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="section-title">Men's Collection</h2>
@@ -51,31 +49,27 @@
     {% for b in football %}
     <div class="product-card">
       <a href="{% url 'product-detail' b.id %}" class="text-decoration-none text-dark">
-        <div class="card h-100 border-0 shadow-sm">
-          <div class="product-image-container">
-            <img src="{{b.p_image.url}}" class="card-img-top" alt="{{b.title}}">
-            <div class="product-actions">
-              <button class="btn btn-pink btn-sm"><i class="fas fa-shopping-cart"></i></button>
-              <button class="btn btn-outline-pink btn-sm"><i class="fas fa-heart"></i></button>
-            </div>
+        <div class="product-image-container">
+          <img src="{{b.p_image.url}}" alt="{{b.title}}">
+          <div class="product-actions">
+            <button class="btn btn-pink btn-sm"><i class="fas fa-shopping-cart"></i></button>
+            <button class="btn btn-outline-pink btn-sm"><i class="fas fa-heart"></i></button>
           </div>
-          <div class="card-body">
-            <h6 class="card-title product-title">{{b.title}}</h6>
-            <div class="d-flex justify-content-between align-items-center">
-              <span class="fw-bold text-pink">Tk. {{b.discounted_price}}</span>
-              {% if b.original_price %}
-              <span class="text-muted text-decoration-line-through">Tk. {{b.original_price}}</span>
-              {% endif %}
-            </div>
-            <div class="mt-2">
-              <small class="text-warning">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star-half-alt"></i>
-                <i class="far fa-star"></i>
-              </small>
-            </div>
+        </div>
+        <div class="card-body">
+          <h6 class="product-title">{{b.title}}</h6>
+          <div class="product-price">
+            <span class="text-pink">Tk. {{b.discounted_price}}</span>
+            {% if b.original_price %}
+            <span class="original-price">Tk. {{b.original_price}}</span>
+            {% endif %}
+          </div>
+          <div class="product-rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+            <i class="far fa-star"></i>
           </div>
         </div>
       </a>
@@ -83,13 +77,11 @@
     {% endfor %}
   </div>
 </div>
-<!-- End 1st Product Slider -->
 
-<!-- Payment Info Section -->
+<!-- ===== Payment Options (Original Code Preserved) ===== -->
 <div class="container my-5">
   <h2 class="text-center mb-4" style="font-weight: 700; color: #d63384;">Payment Options</h2>
   <div class="row g-3 justify-content-center">
-    
     <div class="col-6 col-md-3">
       <div class="card h-100 border-0 shadow-sm" 
            style="border-radius: 15px; transition: transform 0.3s ease, box-shadow 0.3s ease;"
@@ -141,13 +133,10 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>
-<!-- End Payment Info Section -->
 
-
-<!-- 2nd Product Slider -->
+<!-- ===== Women's Collection ===== -->
 <div class="container mb-5">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="section-title">Women's Collection</h2>
@@ -157,31 +146,27 @@
     {% for c in cricket %}
     <div class="product-card">
       <a href="{% url 'product-detail' c.id %}" class="text-decoration-none text-dark">
-        <div class="card h-100 border-0 shadow-sm">
-          <div class="product-image-container">
-            <img src="{{c.p_image.url}}" class="card-img-top" alt="{{c.title}}">
-            <div class="product-actions">
-              <button class="btn btn-pink btn-sm"><i class="fas fa-shopping-cart"></i></button>
-              <button class="btn btn-outline-pink btn-sm"><i class="fas fa-heart"></i></button>
-            </div>
+        <div class="product-image-container">
+          <img src="{{c.p_image.url}}" alt="{{c.title}}">
+          <div class="product-actions">
+            <button class="btn btn-pink btn-sm"><i class="fas fa-shopping-cart"></i></button>
+            <button class="btn btn-outline-pink btn-sm"><i class="fas fa-heart"></i></button>
           </div>
-          <div class="card-body">
-            <h6 class="card-title product-title">{{c.title}}</h6>
-            <div class="d-flex justify-content-between align-items-center">
-              <span class="fw-bold text-pink">Tk. {{c.discounted_price}}</span>
-              {% if c.original_price %}
-              <span class="text-muted text-decoration-line-through">Tk. {{c.original_price}}</span>
-              {% endif %}
-            </div>
-            <div class="mt-2">
-              <small class="text-warning">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star-half-alt"></i>
-                <i class="far fa-star"></i>
-              </small>
-            </div>
+        </div>
+        <div class="card-body">
+          <h6 class="product-title">{{c.title}}</h6>
+          <div class="product-price">
+            <span class="text-pink">Tk. {{c.discounted_price}}</span>
+            {% if c.original_price %}
+            <span class="original-price">Tk. {{c.original_price}}</span>
+            {% endif %}
+          </div>
+          <div class="product-rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+            <i class="far fa-star"></i>
           </div>
         </div>
       </a>
@@ -189,7 +174,103 @@
     {% endfor %}
   </div>
 </div>
-<!-- End 2nd Product Slider -->
+
+<!-- ===== Payment Options (Original Code Preserved) ===== -->
+<div class="container my-5">
+  <h2 class="text-center mb-4" style="font-weight: 700; color: #d63384;">Payment Options</h2>
+  <div class="row g-3 justify-content-center">
+    <div class="col-6 col-md-3">
+      <div class="card h-100 border-0 shadow-sm" 
+           style="border-radius: 15px; transition: transform 0.3s ease, box-shadow 0.3s ease;"
+           onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.15)';" 
+           onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.1)';">
+        <div class="card-body text-center p-3">
+          <img src="{% static 'app/images/payavail/bk.PNG' %}" alt="bkash" 
+               style="max-height: 50px; object-fit: contain; margin-bottom: 10px;">
+          <p class="mb-0" style="font-size: 0.9rem; font-weight: 500; color: #333;">bKash Payment</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <div class="card h-100 border-0 shadow-sm" 
+           style="border-radius: 15px; transition: transform 0.3s ease, box-shadow 0.3s ease;"
+           onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.15)';" 
+           onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.1)';">
+        <div class="card-body text-center p-3">
+          <img src="{% static 'app/images/payavail/ngd.PNG' %}" alt="Nagad" 
+               style="max-height: 50px; object-fit: contain; margin-bottom: 10px;">
+          <p class="mb-0" style="font-size: 0.9rem; font-weight: 500; color: #333;">Nagad Payment</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <div class="card h-100 border-0 shadow-sm" 
+           style="border-radius: 15px; transition: transform 0.3s ease, box-shadow 0.3s ease;"
+           onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.15)';" 
+           onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.1)';">
+        <div class="card-body text-center p-3">
+          <img src="{% static 'app/images/payavail/cod.JPG' %}" alt="Cash on Delivery" 
+               style="max-height: 50px; object-fit: contain; margin-bottom: 10px;">
+          <p class="mb-0" style="font-size: 0.9rem; font-weight: 500; color: #333;">Cash on Delivery</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <div class="card h-100 border-0 shadow-sm" 
+           style="border-radius: 15px; transition: transform 0.3s ease, box-shadow 0.3s ease;"
+           onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.15)';" 
+           onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.1)';">
+        <div class="card-body text-center p-3">
+          <img src="{% static 'app/images/payavail/emi.JPG' %}" alt="EMI" 
+               style="max-height: 50px; object-fit: contain; margin-bottom: 10px;">
+          <p class="mb-0" style="font-size: 0.9rem; font-weight: 500; color: #333;">Easy EMI Options</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Jewelry Collection ===== -->
+<div class="container mb-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="section-title">Jewelry Collection</h2>
+    <a href="{% url 'jwellery' %}" class="btn btn-outline-pink">View All <i class="fas fa-arrow-right ms-1"></i></a>
+  </div>
+  <div class="owl-carousel product-slider" id="slider3">
+    {% for j in jwellery %}
+    <div class="product-card">
+      <a href="{% url 'product-detail' j.id %}" class="text-decoration-none text-dark">
+        <div class="product-image-container">
+          <img src="{{j.p_image.url}}" alt="{{j.title}}">
+          <div class="product-actions">
+            <button class="btn btn-pink btn-sm"><i class="fas fa-shopping-cart"></i></button>
+            <button class="btn btn-outline-pink btn-sm"><i class="fas fa-heart"></i></button>
+          </div>
+        </div>
+        <div class="card-body">
+          <h6 class="product-title">{{j.title}}</h6>
+          <div class="product-price">
+            <span class="text-pink">Tk. {{j.discounted_price}}</span>
+            {% if j.original_price %}
+            <span class="original-price">Tk. {{j.original_price}}</span>
+            {% endif %}
+          </div>
+          <div class="product-rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+            <i class="far fa-star"></i>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
 
 <!-- Newsletter Section -->
 <div class="container my-5">
@@ -221,93 +302,53 @@
   </div>
 </div>
 
-<!-- End Newsletter Section -->
+
 {% endblock main-content %}
 
 {% block extra_css %}
 <style>
-  
+/* ===== Product Card ===== */
+.product-card { transition: transform 0.3s ease, box-shadow 0.3s ease; overflow: hidden; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); background-color: #fff; height: 400px; display: flex; flex-direction: column; }
+.product-card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.15); }
 
-  .product-card { transition: transform 0.3s ease; }
-  .product-card:hover { transform: translateY(-5px); }
+.product-image-container { position: relative; overflow: hidden; height: 220px; }
+.product-image-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+.product-card:hover .product-image-container img { transform: scale(1.05); }
 
-  .product-image-container { position: relative; overflow: hidden; }
-  .product-image-container img { transition: transform 0.5s ease; }
-  .product-card:hover .product-image-container img { transform: scale(1.05); }
+.product-actions { position: absolute; bottom: -50px; left: 0; right: 0; display: flex; justify-content: center; gap: 10px; padding: 10px; background: rgba(255,255,255,0.9); transition: bottom 0.3s ease, opacity 0.3s ease; opacity: 0; }
+.product-card:hover .product-actions { bottom: 10px; opacity: 1; }
+.product-actions .btn { border-radius: 50%; padding: 8px 12px; font-size: 0.9rem; }
 
-  .product-actions {
-    position: absolute;
-    bottom: -40px;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    padding: 10px;
-    transition: bottom 0.3s ease;
-    background: rgba(255,255,255,0.85);
-  }
-  .product-card:hover .product-actions { bottom: 0; }
+.card-body { flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+.product-title { display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-weight: 500; font-size: 0.95rem; margin-bottom: 5px; }
+.product-price { display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 0.95rem; }
+.product-price .original-price { text-decoration: line-through; color: #999; font-weight: 400; }
+.product-rating i { color: #ffc107; font-size: 0.9rem; }
 
-  .product-title {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    height: 48px;
-  }
+/* ===== Newsletter ===== */
+.newsletter-card { border-radius: 20px; transition: transform 0.3s ease, box-shadow 0.3s ease; background: linear-gradient(135deg, #ffe6f0, #ffd6e8); box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+.newsletter-card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.15); }
+.newsletter-input { border-radius: 50px; padding: 15px 20px; border: 1px solid #d63384; transition: all 0.3s ease; }
+.newsletter-input:focus { box-shadow: 0 0 10px rgba(214,51,132,0.3); border-color: #d63384; }
+.newsletter-btn { background-color: #d63384; color: #fff; border-radius: 50px; font-weight: 500; padding: 12px 25px; transition: all 0.3s ease; }
+.newsletter-btn:hover { background-color: #b02a6b; transform: translateY(-2px); }
 
-  .payment-card { transition: transform 0.3s ease; }
-  .payment-card:hover { transform: translateY(-3px); }
-  .payment-img { max-height: 40px; object-fit: contain; }
+/* ===== Carousel ===== */
+.carousel-item img { width: 100%; height: 100%; object-fit: cover; }
 
-  .carousel-caption h3 { font-weight: 600; }
-
-  /* Responsive banner adjustments */
-@media (max-width: 1200px) {
-  .carousel-item {
-    height: 180px;
-  }
-}
-
-@media (max-width: 768px) {
-  .carousel-item {
-    height: 150px;
-  }
-  
-  .banner-img {
-    object-fit: cover; /* Switch to cover on mobile for better appearance */
-  }
-}
-
-@media (max-width: 576px) {
-  .carousel-item {
-    height: 120px;
-  }
-  
-  .custom-control .custom-icon {
-    font-size: 1.2rem;
-    padding: 6px 8px;
-  }
-}
+/* ===== Responsive ===== */
+@media (max-width: 1200px) { .product-card { height: 380px; } .product-image-container { height: 200px; } }
+@media (max-width: 768px) { .product-card { height: 360px; } .product-image-container { height: 180px; } }
+@media (max-width: 576px) { .product-card { height: 340px; } .product-image-container { height: 160px; } }
 </style>
 {% endblock extra_css %}
 
 {% block extra_js %}
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Initialize bootstrap carousel
-    const myCarousel = document.getElementById('mainCarousel');
-    if (myCarousel) {
-      new bootstrap.Carousel(myCarousel, {
-        interval: 4000,
-        wrap: true
-      });
-    }
-
-    // (Optional) Initialize your Owl carousels if you use them
-    // $('#slider1, #slider2').owlCarousel({ loop:true, margin:10, nav:true, responsive:{0:{items:1},600:{items:3},1000:{items:4}} });
-  });
+document.addEventListener('DOMContentLoaded', function() {
+  // Bootstrap Carousel
+  const myCarousel = document.getElementById('carouselExampleControls');
+  if(myCarousel){ new bootstrap.Carousel(myCarousel, { interval: 4000, wrap: true }); }
+});
 </script>
 {% endblock extra_js %}

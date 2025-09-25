@@ -15,7 +15,8 @@ class Productview(View):
  def get(self, request):
   football = Product.objects.filter(category='F')
   cricket = Product.objects.filter(category='C')
-  return render(request, 'app/home.html', { 'football': football,'cricket' : cricket})
+  jwellery = Product.objects.filter(category='J')
+  return render(request, 'app/home.html', { 'football': football,'cricket' : cricket, 'jwellery': jwellery })
 
 
 class ProductDeatilView(View):
@@ -233,6 +234,11 @@ def cricket(request, data = None):
   cricket = Product.objects.filter(category='C')
   return render(request, 'app/cricket.html', {'crickets': cricket})
 
+def jwellery(request, data = None):
+  # if data == None:
+  jwellery = Product.objects.filter(category='J')
+  return render(request, 'app/jwellery.html', {'jwellerys': jwellery})
+
 
 # def buynow(request):
 #  return render(request, 'app/buy-now.html')
@@ -377,17 +383,6 @@ def generate_bot_response(user_message):
        return "Hello! How can I assist you today?"
     else:
         return "I'm sorry, I didn't understand that."
-
-
-
-# def search_products(request):
-#     query = request.GET.get('q')  # search box থেকে data
-#     if query:
-#         search_results = Product.objects.filter(title__icontains=query)
-#     else:
-#         search_results = Product.objects.none()  # empty queryset
-
-#     return render(request, 'app/search_results.html', {'search_results': search_results, 'query': query})
 
 
 def search_products(request):

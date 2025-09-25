@@ -23,6 +23,7 @@ class Customer (models.Model):
 CATEGORY_CHOICES = (
     ('M', 'Men'),
     ('W', 'Women'),
+    ('J', 'Jwellery')
 )
 
 class Product(models.Model):
