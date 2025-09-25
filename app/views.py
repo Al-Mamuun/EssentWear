@@ -29,19 +29,22 @@ class ProductDeatilView(View):
 @login_required
 def add_to_cart(request):
     if request.method == 'POST':
-        product_id = request.POST.get('prod_id')  # POST থেকে নেওয়া
-        product = get_object_or_404(Product, id=product_id)  # যদি product না থাকে, 404 দেখাবে
+        product_id = request.POST.get('prod_id')
+        product = get_object_or_404(Product, id=product_id)
 
-        # Check if item already in cart
+        # Cart এ add বা quantity update
         cart_item, created = Cart.objects.get_or_create(user=request.user, product=product)
         if not created:
-            # যদি আগেই cart-এ থাকে, quantity বাড়ানো
             cart_item.quantity += 1
             cart_item.save()
 
-        return redirect('showcart')  # Cart page-এ redirect
+        return redirect('showcart')  
     else:
-        return redirect('/')  # GET request এ homepage-এ redirect
+
+        next_url = request.GET.get('next')
+        if next_url:
+            return redirect(next_url)
+        return redirect('/')
 
 @login_required
 def show_cart(request):
@@ -221,7 +224,7 @@ class change_password(View):
   return render(request, 'app/changepassword.html', {'form': form})
 
 def football(request, data = None):
- if data == None:
+ #if data == None:
   football = Product.objects.filter(category='F')
   return render(request, 'app/football.html', {'footballs': football})
 
@@ -291,13 +294,13 @@ def chatbot(request):
             # Use regular expressions to extract the product query
             search_pattern = r'(search for|find) (.+)'  # Match "search for" followed by any text
             match = re.search(search_pattern, user_message, re.IGNORECASE)
-            
+
             if match:
                 search_phrase = match.group(1)
                 product_query = match.group(2).strip()
 
                 search_results = Product.objects.filter(title__icontains=product_query)
-                
+
                 if search_results:
                     # Initialize an empty response
                     bot_response = "Here are some products I found:<br><br>"
@@ -318,7 +321,7 @@ def chatbot(request):
                 bot_response = generate_bot_response(user_message)  # Define this function for other responses
 
             return JsonResponse({'bot_response': bot_response})
-        
+
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
 
@@ -367,9 +370,9 @@ def generate_bot_response(user_message):
     elif "sales info?" in user_message :
        return "Stay tuned for our upcoming seasonal sale event next month, where you can enjoy exciting discounts on various products."
     elif 'payment methods' in user_message :
-        return 'We accept various payment methods, including credit/debit cards, PayPal, Bkash, Nagad, and other major online payment platforms for your convenience.'   
+        return 'We accept various payment methods, including credit/debit cards, PayPal, Bkash, Nagad, and other major online payment platforms for your convenience.'
     elif 'cancel order' in user_message or 'cancel my order' in user_message:
-        return 'You can cancel your order within 24 hours of placing it. After that, we recommend contacting our customer support team for further assistance.'  
+        return 'You can cancel your order within 24 hours of placing it. After that, we recommend contacting our customer support team for further assistance.'
     elif "hi" in user_message or 'hola' in user_message:
        return "Hello! How can I assist you today?"
     else:

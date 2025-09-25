@@ -22,7 +22,7 @@
       <h4 class="my-4">
         <span class="text-primary fw-bold">Tk. {{ product.discounted_price }}</span>
         {% if product.selling_price > product.discounted_price %}
-        <small class="text-muted text-decoration-line-through">{{ product.selling_price }}</small>
+          <small class="text-muted text-decoration-line-through">{{ product.selling_price }}</small>
         {% endif %}
       </h4>
 
@@ -32,14 +32,15 @@
           {% if item_already_in_cart %}
             <a href="{% url 'showcart' %}" class="btn btn-warning shadow px-5 py-2 me-3">Go to Cart</a>
           {% else %}
-            <form action="/add-to-cart/" method="POST" class="d-inline">
+            <form action="{% url 'add-to-cart' %}" method="POST" class="d-inline">
               {% csrf_token %}
               <input type="hidden" name="prod_id" value="{{ product.id }}">
               <button type="submit" class="btn btn-primary shadow px-5 py-2">Add to Cart</button>
             </form>
           {% endif %}
         {% else %}
-          <form action="/add-to-cart/" method="POST" class="d-inline">
+          <!-- login নাই হলে next param সহ পাঠানো হবে -->
+          <form action="{% url 'add-to-cart' %}?next={% url 'product-detail' pk=product.id %}" method="POST" class="d-inline">
             {% csrf_token %}
             <input type="hidden" name="prod_id" value="{{ product.id }}">
             <button type="submit" class="btn btn-primary shadow px-5 py-2">Add to Cart</button>

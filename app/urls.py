@@ -24,8 +24,8 @@ urlpatterns = [
     path('football/<slug:data>', views.football, name='footballdata'),
     path('women/', views.cricket, name='women'),
     path('accounts/login/', auth_views.LoginView.as_view(template_name='app/login.html', authentication_form=LoginForm), name='login'),
-    
-    
+
+
     path('passwordchange/', auth_views.PasswordChangeView.as_view(template_name='app/passwordchange.html', form_class=MyPasswordChangeForm, success_url='/passwordchangedone/'), name='changepassword'),
     path('passwordchangedone/',auth_views.PasswordChangeDoneView.as_view(template_name='app/passwordchangedone.html'), name='passwordchangedone'),
 
@@ -38,13 +38,13 @@ urlpatterns = [
     path('accounts/login/', auth_views.LoginView.as_view(template_name='app/login.html', authentication_form=LoginForm), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='app/logout.html'), name='logout'),
     path('registration/', views.CustomerRegistrationView.as_view(), name='customerregistration'),
-    
+
     path('checkout/', views.checkout, name='checkout'),
     path('orderdone/', views.order_done, name='orderdone'),
     path('orders/', views.orders, name='orders'),
     path('chatbot/', views.chatbot, name='chatbot'),
     path('search/', views.search_products, name='search_products'),
-    
+
     path('mamun/', views.mamun, name='mamun')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:
