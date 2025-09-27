@@ -5,7 +5,7 @@ from .forms import CustomerRegistrationForm, PasswordChangeForm , CustomerProfil
 from django.contrib import messages
 from django.db.models import Q
 from django.http import JsonResponse
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.decorators import method_decorator
 import re
 
@@ -25,6 +25,18 @@ class ProductDeatilView(View):
   if request.user.is_authenticated:
     item_already_in_cart = Cart.objects.filter(Q(product=product.id) & Q(user=request.user)).exists()
   return render(request, 'app/productdetail.html', {'product': product, 'item_already_in_cart':item_already_in_cart})
+
+
+class ProductDeleteView(View):
+    def post(self, request, pk):
+        if not request.user.is_superuser:
+            messages.error(request, "You are not authorized to delete this product.")
+            return redirect('product-detail', pk=pk)
+
+        product = get_object_or_404(Product, pk=pk)
+        product.delete()
+        messages.success(request, f"Product '{product.title}' has been deleted successfully.")
+        return redirect('home')  # Redirect to homepage or product list
 
 
 # ----------------- Cart Views -----------------
@@ -440,3 +452,27 @@ def size_guide(request):
 
 def shipping_info(request):
     return render(request, 'app/shipping_info.html')
+
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def add_product(request):
+    if request.method == "POST":
+        title = request.POST.get("title")
+        category = request.POST.get("category")
+        selling_price = request.POST.get("selling_price")
+        discounted_price = request.POST.get("discounted_price")
+        description = request.POST.get("description")
+        image = request.FILES.get("p_image")
+
+        Product.objects.create(
+            title=title,
+            category=category,
+            selling_price=selling_price,
+            discounted_price=discounted_price,
+            description=description,
+            p_image=image
+        )
+        return redirect("home")  # নতুন প্রোডাক্ট দিলে home এ ফিরবে
+
+    return redirect("home")

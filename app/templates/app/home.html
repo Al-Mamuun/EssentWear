@@ -272,6 +272,73 @@
   </div>
 </div>
 
+<!-- ===== Superuser Add Product Button & Modal ===== -->
+{% if request.user.is_superuser %}
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+      <button class="btn-add-product w-100 py-3" data-bs-toggle="modal" data-bs-target="#addProductModal">
+        <i class="fas fa-plus me-2"></i> Add Product
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content rounded-3">
+      <div class="modal-header" style="background: linear-gradient(135deg, #ff66a3, #d63384); color: #fff;">
+        <h5 class="modal-title" id="addProductModalLabel">Add New Product</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form method="POST" action="{% url 'add_product' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label fw-bold">Title</label>
+              <input type="text" name="title" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold">Category</label>
+              <select name="category" class="form-select" required>
+                <option value="F">Football</option>
+                <option value="C">Cricket</option>
+                <option value="J">Jewelry</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold">Selling Price</label>
+              <input type="number" name="selling_price" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold">Discounted Price</label>
+              <input type="number" name="discounted_price" class="form-control" required>
+            </div>
+            <div class="col-md-12">
+              <label class="form-label fw-bold">Description</label>
+              <textarea name="description" rows="3" class="form-control"></textarea>
+            </div>
+            <div class="col-md-12">
+              <label class="form-label fw-bold">Product Image</label>
+              <input type="file" name="p_image" class="form-control" required>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn-add-product w-100 py-2">
+            Save Product
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+
+
 <!-- Newsletter Section -->
 <div class="container my-5">
   <div class="row justify-content-center">

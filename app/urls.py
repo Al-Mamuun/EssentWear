@@ -8,6 +8,7 @@ from .forms import LoginForm, MyPasswordChangeForm, MyPasswordResetForm, MySetPa
 urlpatterns = [
     path('', views.Productview.as_view(), name="home"),
     path('product-detail/<int:pk>', views.ProductDeatilView.as_view(), name='product-detail'),
+     path('product/delete/<int:pk>/', views.ProductDeleteView.as_view(), name='product-delete'),
 
     path('add-to-cart/', views.add_to_cart, name='add-to-cart'),
     path('cart/', views.show_cart, name='showcart'),
@@ -50,7 +51,9 @@ urlpatterns = [
     path('faq/', views.faq, name='faq'),
     path('return-policy/', views.return_policy, name='return_policy'),
     path('size-guide/', views.size_guide, name='size_guide'),
-    path('shipping-info/', views.shipping_info, name='shipping_info')
+    path('shipping-info/', views.shipping_info, name='shipping_info'),
+    
+    path('add-product/', views.add_product, name='add_product')
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:
