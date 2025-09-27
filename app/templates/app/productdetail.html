@@ -42,24 +42,35 @@
             </button>
           </form>
         {% else %}
-          <!-- Normal User: Add to Cart / Go to Cart -->
+          <!-- Normal User: Add to Cart / Buy Now -->
           {% if request.user.is_authenticated %}
             {% if item_already_in_cart %}
               <a href="{% url 'showcart' %}" class="btn btn-pink shadow px-4 py-2">Go to Cart</a>
+              <form action="{% url 'checkout' %}" method="POST" class="d-inline">
+                {% csrf_token %}
+                <input type="hidden" name="prod_id" value="{{ product.id }}">
+                <button type="submit" class="btn btn-primary shadow px-4 py-2">Order Now</button>
+              </form>
             {% else %}
               <form action="{% url 'add-to-cart' %}" method="POST" class="d-inline">
                 {% csrf_token %}
                 <input type="hidden" name="prod_id" value="{{ product.id }}">
                 <button type="submit" class="btn btn-pink shadow px-4 py-2">Add to Cart</button>
               </form>
+              <form action="{% url 'checkout' %}" method="POST" class="d-inline">
+                {% csrf_token %}
+                <input type="hidden" name="prod_id" value="{{ product.id }}">
+                <button type="submit" class="btn btn-primary shadow px-4 py-2">Order Now</button>
+              </form>
             {% endif %}
           {% else %}
+            <!-- Guest: Add to Cart + Order Now -->
             <form action="{% url 'add-to-cart' %}?next={% url 'product-detail' pk=product.id %}" method="POST" class="d-inline">
               {% csrf_token %}
               <input type="hidden" name="prod_id" value="{{ product.id }}">
               <button type="submit" class="btn btn-pink shadow px-4 py-2">Add to Cart</button>
             </form>
-            <a href="{% url 'showcart' %}" class="btn btn-pink shadow px-4 py-2">Buy Now</a>
+            <a href="{% url 'checkout' %}" class="btn btn-primary shadow px-4 py-2">Order Now</a>
           {% endif %}
         {% endif %}
       </div>
@@ -118,15 +129,8 @@
       cursor: pointer;
       transition: all 0.3s ease;
     }
-    .payment-logo img {
-      max-width: 60%;
-      max-height: 60%;
-      object-fit: contain;
-    }
-    .payment-logo:hover {
-      transform: scale(1.1);
-      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-    }
+    .payment-logo img { max-width: 60%; max-height: 60%; object-fit: contain; }
+    .payment-logo:hover { transform: scale(1.1); box-shadow: 0 6px 15px rgba(0,0,0,0.2); }
     .bkash { background: #E2136E; }
     .nagad { background: #F6931E; }
     .rocket { background: #7B2CBF; }
@@ -134,20 +138,16 @@
     .mastercard { background: #EB001B; }
     .paypal { background: #003087; }
 
-    /* Pink Button Style for All */
+    /* Buttons */
     .btn-pink {
-      background-color: #d63384;
-      color: #fff;
-      border-radius: 50px;
-      padding: 8px 20px;
-      transition: all 0.3s ease;
-      border: none;
+      background-color: #d63384; color: #fff; border-radius: 50px; padding: 8px 20px; transition: all 0.3s ease; border: none;
     }
-    .btn-pink:hover {
-      background-color: #ff66a3;
-      color: #fff;
-      transform: translateY(-2px);
+    .btn-pink:hover { background-color: #ff66a3; color: #fff; transform: translateY(-2px); }
+
+    .btn-primary {
+      background-color: #007bff; color: #fff; border-radius: 50px; padding: 8px 20px; transition: all 0.3s ease; border: none;
     }
+    .btn-primary:hover { background-color: #0069d9; transform: translateY(-2px); }
   </style>
 </div>
 {% endblock main-content %}
