@@ -3,29 +3,86 @@
 {% block title %}Men{% endblock title %}
 {% block main-content %}
 <div class="container my-5">
- <div class="row">
-  <div class="col-sm-3">
-  <div>
-   <a href="{%url 'men' %}" class="list-group-item list-group-item-action" aria-current="true">All Product</a>
-  </div>
-  </div>
-
-  <div class="col-sm-8 ">
-   <div class="row ">
-    {% for product in footballs %}
-    <div class="col-sm-4 text-center mb-4 border" >
-     <a href="{% url 'product-detail' product.id %}" class="btn">
-      <div class="item">
-       <img src="{{product.p_image.url}}" alt="" height="300" class="img-fluid">
-       <div class="fw-bold">{{ product.title }}</div>
-       <div class="fw-bold">Tk. {{ product.discounted_price }}</div>
-       <smal class="fw-light text-decoration-line-through">{{ product.selling_price }}</smal>
+  <div class="row">
+    
+    <!-- Sidebar -->
+    <div class="col-md-3 mb-4">
+      <div class="list-group shadow-sm rounded border-0">
+        <a href="{% url 'men' %}" 
+           class="list-group-item list-group-item-action fw-semibold text-center active"
+           style="background: linear-gradient(135deg, #ff80ab, #ffb6c1); border: none; color: #fff;">
+          All Products
+        </a>
       </div>
-     </a>
+
+      <!-- Price Range Filter -->
+      <div class="card mt-4 border-0 shadow-sm" style="border-radius: 15px;">
+        <div class="card-body">
+          <h6 class="fw-bold mb-3 text-center" style="color: #d63384;">Filter by Price</h6>
+          <form method="get" action="">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="price" id="under500" value="under500">
+              <label class="form-check-label" for="under500">Under Tk. 500</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="price" id="500to1000" value="500-1000">
+              <label class="form-check-label" for="500to1000">Tk. 500 - 1000</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="price" id="1000to2000" value="1000-2000">
+              <label class="form-check-label" for="1000to2000">Tk. 1000 - 2000</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="price" id="above2000" value="above2000">
+              <label class="form-check-label" for="above2000">Above Tk. 2000</label>
+            </div>
+            <button type="submit" class="btn w-100 mt-3 fw-semibold" 
+                    style="background: #ff80ab; color: white; border-radius: 10px;">
+              Apply
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
-    {% endfor %}
-   </div>
+
+    <!-- Product Grid -->
+    <div class="col-md-9">
+      <div class="row g-4">
+        {% for product in footballs %}
+        <div class="col-sm-6 col-md-4">
+          <div class="card h-100 border-0 shadow-sm product-card">
+            <a href="{% url 'product-detail' product.id %}" class="text-decoration-none text-dark">
+              <img src="{{ product.p_image.url }}" class="card-img-top p-3 img-fluid" alt="{{ product.title }}" style="height: 250px; object-fit: contain;">
+              <div class="card-body text-center">
+                <h6 class="card-title fw-bold mb-1">{{ product.title }}</h6>
+                <p class="mb-1 text-success fw-bold">Tk. {{ product.discounted_price }}</p>
+                <p class="text-muted text-decoration-line-through mb-0">
+                  {{ product.selling_price }}
+                </p>
+              </div>
+            </a>
+          </div>
+        </div>
+        {% empty %}
+        <p class="text-center text-muted">No products available.</p>
+        {% endfor %}
+      </div>
+    </div>
+
   </div>
- </div>
 </div>
+
+<style>
+  .product-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 15px;
+  }
+  .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(214, 51, 132, 0.3);
+  }
+  .list-group-item.active {
+    font-weight: bold;
+  }
+</style>
 {% endblock main-content %}

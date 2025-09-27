@@ -218,20 +218,54 @@ class change_password(View):
   return render(request, 'app/changepassword.html', {'form': form})
 
 # ----------------- Category Views -----------------
-def football(request, data = None):
- #if data == None:
-  football = Product.objects.filter(category='F')
-  return render(request, 'app/football.html', {'footballs': football})
+def football(request, data=None):
+    football = Product.objects.filter(category='F')
 
-def cricket(request, data = None):
-  # if data == None:
-  cricket = Product.objects.filter(category='C')
-  return render(request, 'app/cricket.html', {'crickets': cricket})
+    # price range filter
+    price = request.GET.get("price")
+    if price == "under500":
+        football = football.filter(discounted_price__lt=500)
+    elif price == "500-1000":
+        football = football.filter(discounted_price__gte=500, discounted_price__lte=1000)
+    elif price == "1000-2000":
+        football = football.filter(discounted_price__gte=1000, discounted_price__lte=2000)
+    elif price == "above2000":
+        football = football.filter(discounted_price__gt=2000)
 
-def jwellery(request, data = None):
-  # if data == None:
-  jwellery = Product.objects.filter(category='J')
-  return render(request, 'app/jwellery.html', {'jwellerys': jwellery})
+    return render(request, 'app/football.html', {'footballs': football})
+
+def cricket(request, data=None):
+    cricket = Product.objects.filter(category='C')
+
+    # price range filter
+    price = request.GET.get("price")
+    if price == "under500":
+        cricket = cricket.filter(discounted_price__lt=500)
+    elif price == "500-1000":
+        cricket = cricket.filter(discounted_price__gte=500, discounted_price__lte=1000)
+    elif price == "1000-2000":
+        cricket = cricket.filter(discounted_price__gte=1000, discounted_price__lte=2000)
+    elif price == "above2000":
+        cricket = cricket.filter(discounted_price__gt=2000)
+
+    return render(request, 'app/cricket.html', {'crickets': cricket})
+
+
+def jwellery(request, data=None):
+    jwellery = Product.objects.filter(category='J')
+
+    # price range filter
+    price = request.GET.get("price")
+    if price == "under500":
+        jwellery = jwellery.filter(discounted_price__lt=500)
+    elif price == "500-1000":
+        jwellery = jwellery.filter(discounted_price__gte=500, discounted_price__lte=1000)
+    elif price == "1000-2000":
+        jwellery = jwellery.filter(discounted_price__gte=1000, discounted_price__lte=2000)
+    elif price == "above2000":
+        jwellery = jwellery.filter(discounted_price__gt=2000)
+
+    return render(request, 'app/jwellery.html', {'jwellerys': jwellery})
 
 
 # ----------------- Authentication Views -----------------
