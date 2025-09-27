@@ -13,10 +13,10 @@ import re
 # ----------------- Product Views -----------------
 class Productview(View):
  def get(self, request):
-  football = Product.objects.filter(category='F')
-  cricket = Product.objects.filter(category='C')
+  men = Product.objects.filter(category='M')
+  women = Product.objects.filter(category='W')
   jwellery = Product.objects.filter(category='J')
-  return render(request, 'app/home.html', { 'football': football,'cricket' : cricket, 'jwellery': jwellery })
+  return render(request, 'app/home.html', { 'men' : men, 'women' : women, 'jwellery': jwellery })
 
 class ProductDeatilView(View):
  def get(self, request, pk):
@@ -240,37 +240,37 @@ class change_password(View):
   return render(request, 'app/changepassword.html', {'form': form})
 
 # ----------------- Category Views -----------------
-def football(request, data=None):
-    football = Product.objects.filter(category='F')
+def men(request, data=None):
+    men = Product.objects.filter(category='M')
 
     # price range filter
     price = request.GET.get("price")
     if price == "under500":
-        football = football.filter(discounted_price__lt=500)
+        men = men.filter(discounted_price__lt=500)
     elif price == "500-1000":
-        football = football.filter(discounted_price__gte=500, discounted_price__lte=1000)
+        men = men.filter(discounted_price__gte=500, discounted_price__lte=1000)
     elif price == "1000-2000":
-        football = football.filter(discounted_price__gte=1000, discounted_price__lte=2000)
+        men = men.filter(discounted_price__gte=1000, discounted_price__lte=2000)
     elif price == "above2000":
-        football = football.filter(discounted_price__gt=2000)
+        men = men.filter(discounted_price__gt=2000)
 
-    return render(request, 'app/football.html', {'footballs': football})
+    return render(request, 'app/men.html', {'mens': men})
 
-def cricket(request, data=None):
-    cricket = Product.objects.filter(category='C')
+def women(request, data=None):
+    women = Product.objects.filter(category='W')
 
     # price range filter
     price = request.GET.get("price")
     if price == "under500":
-        cricket = cricket.filter(discounted_price__lt=500)
+        women = women.filter(discounted_price__lt=500)
     elif price == "500-1000":
-        cricket = cricket.filter(discounted_price__gte=500, discounted_price__lte=1000)
+        women = women.filter(discounted_price__gte=500, discounted_price__lte=1000)
     elif price == "1000-2000":
-        cricket = cricket.filter(discounted_price__gte=1000, discounted_price__lte=2000)
+        women = women.filter(discounted_price__gte=1000, discounted_price__lte=2000)
     elif price == "above2000":
-        cricket = cricket.filter(discounted_price__gt=2000)
+        women = women.filter(discounted_price__gt=2000)
 
-    return render(request, 'app/cricket.html', {'crickets': cricket})
+    return render(request, 'app/women.html', {'womens': women})
 
 
 def jwellery(request, data=None):
@@ -389,6 +389,8 @@ def generate_bot_response(user_message):
        return "Here is the link of women section: <a href='http://127.0.0.1:8000/women/'>Click here</a> <br> Please checkout"
     elif "gents" in user_message or 'men' in user_message  or 'man' in user_message:
        return "Here is the link of men section: <a href='http://127.0.0.1:8000/men/'>Click here</a><br>Please checkout"
+    elif "jwellery" in user_message or 'jwellry' in user_message  or 'jewellery' in user_message :
+       return "Here is the link of jwellery section: <a href='http://127.0.0.1:8000/jwellery/'>Click here</a> <br> Please checkout"
     elif "for summer" in user_message :
        return "Light and breathable fabrics like cotton and linen are perfect choices for comfortable summer wear."
     elif "my size" in user_message :

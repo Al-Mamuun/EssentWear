@@ -21,8 +21,8 @@ class Customer (models.Model):
         return str(self.id)
 
 CATEGORY_CHOICES = (
-    ('F', 'Football'),
-    ('C', 'Cricket'),
+    ('M', 'Men'),
+    ('W', 'Women'),
     ('J', 'Jewelry'),
 )
 

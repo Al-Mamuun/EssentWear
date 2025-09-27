@@ -21,9 +21,8 @@ urlpatterns = [
     path('profile/', views.ProfileView.as_view(), name='profile'),
     path('address/', views.address, name='address'),
 
-    path('men/', views.football, name='men'),
-    #path('football/<slug:data>', views.football, name='footballdata'),
-    path('women/', views.cricket, name='women'),
+    path('men/', views.men, name='men'),
+    path('women/', views.women, name='women'),
     path('jwellery/', views.jwellery, name='jwellery'),
     path('accounts/login/', auth_views.LoginView.as_view(template_name='app/login.html', authentication_form=LoginForm), name='login'),
 

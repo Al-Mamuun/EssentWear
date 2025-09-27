@@ -46,22 +46,22 @@
     <a href="{% url 'men' %}" class="btn btn-outline-pink">View All <i class="fas fa-arrow-right ms-1"></i></a>
   </div>
   <div class="owl-carousel product-slider" id="slider1">
-    {% for b in football %}
+    {% for m in men %}
     <div class="product-card">
-      <a href="{% url 'product-detail' b.id %}" class="text-decoration-none text-dark">
+      <a href="{% url 'product-detail' m.id %}" class="text-decoration-none text-dark">
         <div class="product-image-container">
-          <img src="{{b.p_image.url}}" alt="{{b.title}}">
+          <img src="{{m.p_image.url}}" alt="{{m.title}}">
           <div class="product-actions">
             <button class="btn btn-pink btn-sm"><i class="fas fa-shopping-cart"></i></button>
             <button class="btn btn-outline-pink btn-sm"><i class="fas fa-heart"></i></button>
           </div>
         </div>
         <div class="card-body">
-          <h6 class="product-title">{{b.title}}</h6>
+          <h6 class="product-title">{{m.title}}</h6>
           <div class="product-price">
-            <span class="text-pink">Tk. {{b.discounted_price}}</span>
-            {% if b.original_price %}
-            <span class="original-price">Tk. {{b.original_price}}</span>
+            <span class="text-pink">Tk. {{m.discounted_price}}</span>
+            {% if m.original_price %}
+            <span class="original-price">Tk. {{m.original_price}}</span>
             {% endif %}
           </div>
           <div class="product-rating">
@@ -143,22 +143,22 @@
     <a href="{% url 'women' %}" class="btn btn-outline-pink">View All <i class="fas fa-arrow-right ms-1"></i></a>
   </div>
   <div class="owl-carousel product-slider" id="slider2">
-    {% for c in cricket %}
+    {% for w in women %}
     <div class="product-card">
-      <a href="{% url 'product-detail' c.id %}" class="text-decoration-none text-dark">
+      <a href="{% url 'product-detail' w.id %}" class="text-decoration-none text-dark">
         <div class="product-image-container">
-          <img src="{{c.p_image.url}}" alt="{{c.title}}">
+          <img src="{{w.p_image.url}}" alt="{{w.title}}">
           <div class="product-actions">
             <button class="btn btn-pink btn-sm"><i class="fas fa-shopping-cart"></i></button>
             <button class="btn btn-outline-pink btn-sm"><i class="fas fa-heart"></i></button>
           </div>
         </div>
         <div class="card-body">
-          <h6 class="product-title">{{c.title}}</h6>
+          <h6 class="product-title">{{w.title}}</h6>
           <div class="product-price">
-            <span class="text-pink">Tk. {{c.discounted_price}}</span>
-            {% if c.original_price %}
-            <span class="original-price">Tk. {{c.original_price}}</span>
+            <span class="text-pink">Tk. {{w.discounted_price}}</span>
+            {% if w.original_price %}
+            <span class="original-price">Tk. {{w.original_price}}</span>
             {% endif %}
           </div>
           <div class="product-rating">
@@ -303,8 +303,8 @@
             <div class="col-md-6">
               <label class="form-label fw-bold">Category</label>
               <select name="category" class="form-select" required>
-                <option value="F">Football</option>
-                <option value="C">Cricket</option>
+                <option value="M">Men</option>
+                <option value="W">Women</option>
                 <option value="J">Jewelry</option>
               </select>
             </div>

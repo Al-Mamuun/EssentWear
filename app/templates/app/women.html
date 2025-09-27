@@ -1,6 +1,6 @@
 {% extends 'app/base.html' %}
 {% load static %}
-{% block title %}Men{% endblock title %}
+{% block title %}Women{% endblock title %}
 {% block main-content %}
 <div class="container my-5">
   <div class="row">
@@ -8,7 +8,7 @@
     <!-- Sidebar -->
     <div class="col-md-3 mb-4">
       <div class="list-group shadow-sm rounded border-0">
-        <a href="{% url 'men' %}" 
+        <a href="{% url 'women' %}" 
            class="list-group-item list-group-item-action fw-semibold text-center active"
            style="background: linear-gradient(135deg, #ff80ab, #ffb6c1); border: none; color: #fff;">
           All Products
@@ -48,7 +48,7 @@
     <!-- Product Grid -->
     <div class="col-md-9">
       <div class="row g-4">
-        {% for product in footballs %}
+        {% for product in womens %}
         <div class="col-sm-6 col-md-4">
           <div class="card h-100 border-0 shadow-sm product-card">
             <a href="{% url 'product-detail' product.id %}" class="text-decoration-none text-dark">
