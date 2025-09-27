@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views import View
 from .models import Customer, Product, Cart, OrderPlaced, ChatHistory
-from .forms import CustomerRegistrationForm, PasswordChangeForm , CustomerProfileForm
+from .forms import CustomerRegistrationForm, PasswordChangeForm, CustomerProfileForm, ProductForm
 from django.contrib import messages
 from django.db.models import Q
 from django.http import JsonResponse
@@ -38,7 +38,17 @@ class ProductDeleteView(View):
         messages.success(request, f"Product '{product.title}' has been deleted successfully.")
         return redirect('home')  # Redirect to homepage or product list
 
-
+@user_passes_test(lambda u: u.is_superuser)
+def product_edit(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    if request.method == "POST":
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect('product-detail', pk=product.pk)
+    else:
+        form = ProductForm(instance=product)
+    return render(request, "app/product_edit.html", {"form": form, "product": product})
 # ----------------- Cart Views -----------------
 @login_required
 def add_to_cart(request):

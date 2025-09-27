@@ -1,0 +1,108 @@
+{% extends 'app/base.html' %}
+{% block title %}Edit Product{% endblock title %}
+
+{% block main-content %}
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-lg border-0 rounded-4" style="background: #fff0f6;">
+        <!-- Header -->
+        <div class="card-header text-center rounded-top" style="background: linear-gradient(135deg, #ff85c0, #d63384);">
+          <h4 class="mb-0 text-white fw-bold">
+            <i class="fas fa-edit me-2"></i> Edit Product
+          </h4>
+        </div>
+
+        <!-- Form -->
+        <div class="card-body p-4">
+          <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="mb-3">
+              {{ form.title.label_tag }}
+              {{ form.title }}
+            </div>
+
+            <div class="mb-3">
+              {{ form.description.label_tag }}
+              {{ form.description }}
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                {{ form.selling_price.label_tag }}
+                {{ form.selling_price }}
+              </div>
+              <div class="col-md-6 mb-3">
+                {{ form.discounted_price.label_tag }}
+                {{ form.discounted_price }}
+              </div>
+            </div>
+
+            <div class="mb-3">
+              {{ form.p_image.label_tag }}
+              {{ form.p_image }}
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-flex justify-content-between mt-4">
+              <a href="{% url 'product-detail' product.id %}" class="btn btn-outline-secondary px-4 rounded-pill">
+                <i class="fas fa-arrow-left me-1"></i> Cancel
+              </a>
+              <button type="submit" class="btn btn-pink px-4 rounded-pill">
+                <i class="fas fa-save me-1"></i> Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Custom Styling -->
+<style>
+  input[type="text"], input[type="number"], textarea, input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #f8bbd0;
+    border-radius: 12px;
+    font-size: 1rem;
+    margin-top: 5px;
+    background: #fff;
+    transition: all 0.3s ease-in-out;
+  }
+
+  input:focus, textarea:focus {
+    border-color: #d63384;
+    box-shadow: 0 0 8px rgba(214, 51, 132, 0.5);
+    outline: none;
+  }
+
+  .btn-pink {
+    background: linear-gradient(135deg, #ff85c0, #d63384);
+    color: #fff;
+    border: none;
+    transition: 0.3s ease-in-out;
+  }
+
+  .btn-pink:hover {
+    background: linear-gradient(135deg, #ff99cc, #e75480);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(214, 51, 132, 0.4);
+  }
+
+  .card {
+    transition: transform 0.3s ease;
+  }
+
+  .card:hover {
+    transform: scale(1.01);
+  }
+
+  label {
+    font-weight: 600;
+    color: #d63384;
+  }
+</style>
+{% endblock main-content %}
