@@ -16,7 +16,7 @@ class Productview(View):
   men = Product.objects.filter(category='M')
   women = Product.objects.filter(category='W')
   jwellery = Product.objects.filter(category='J')
-  return render(request, 'app/home.html', { 'men' : men, 'women' : women, 'jwellery': jwellery })
+  return render(request, 'app/home/home.html', { 'men' : men, 'women' : women, 'jwellery': jwellery })
 
 class ProductDeatilView(View):
  def get(self, request, pk):
@@ -24,7 +24,7 @@ class ProductDeatilView(View):
   item_already_in_cart = False
   if request.user.is_authenticated:
     item_already_in_cart = Cart.objects.filter(Q(product=product.id) & Q(user=request.user)).exists()
-  return render(request, 'app/productdetail.html', {'product': product, 'item_already_in_cart':item_already_in_cart})
+  return render(request, 'app/product/productdetail.html', {'product': product, 'item_already_in_cart':item_already_in_cart})
 
 
 class ProductDeleteView(View):
@@ -48,7 +48,7 @@ def product_edit(request, pk):
             return redirect('product-detail', pk=product.pk)
     else:
         form = ProductForm(instance=product)
-    return render(request, "app/product_edit.html", {"form": form, "product": product})
+    return render(request, "app/product/product_edit.html", {"form": form, "product": product})
 # ----------------- Cart Views -----------------
 @login_required
 def add_to_cart(request):
@@ -80,9 +80,9 @@ def show_cart(request):
     tempamount = (p.quantity * p.product.discounted_price)
     amount += tempamount
     total_amount = amount + shiiping_amount
-   return render(request, 'app/addtocart.html', {'cart': cart, 'totalamount': total_amount, 'amount': amount, 'shipingamount': shiiping_amount})
+   return render(request, 'app/cart/addtocart.html', {'cart': cart, 'totalamount': total_amount, 'amount': amount, 'shipingamount': shiiping_amount})
   else:
-   return render(request, 'app/emptycart.html')
+   return render(request, 'app/cart/emptycart.html')
 
 def plus_cart(request):
  if request.method == 'GET':
@@ -177,7 +177,7 @@ class ProfileView(View):
         # Recent 5 orders
         order_placed = OrderPlaced.objects.filter(user=request.user).order_by('-id')[:5]
 
-        return render(request, 'app/profile.html', {
+        return render(request, 'app/profile/profile.html', {
             'form': form,
             'profile': profile,
             'order_placed': order_placed,
@@ -204,7 +204,7 @@ class ProfileView(View):
             return redirect('profile')
 
         order_placed = OrderPlaced.objects.filter(user=request.user).order_by('-id')[:5]
-        return render(request, 'app/profile.html', {
+        return render(request, 'app/profile/profile.html', {
             'form': form,
             'profile': profile,
             'order_placed': order_placed,
@@ -226,18 +226,18 @@ def address(request):
         messages.success(request, "Address updated successfully!")
         return redirect('address')  # Refresh page to show updated address
 
-    return render(request, 'app/address.html', {'add': add, 'active': 'btn-primary'})
+    return render(request, 'app/profile/address.html', {'add': add, 'active': 'btn-primary'})
 
 @login_required
 def orders(request):
     order_placed = OrderPlaced.objects.filter(user=request.user).order_by('-id')
-    return render(request, 'app/orders.html', {'order_placed': order_placed})
+    return render(request, 'app/cart/orders.html', {'order_placed': order_placed})
 
 class change_password(View):
  def get(self, request):
   form=PasswordChangeForm()
   messages.success(request, 'Congratulations!! Changed Successfully')
-  return render(request, 'app/changepassword.html', {'form': form})
+  return render(request, 'app/authen/changepassword.html', {'form': form})
 
 # ----------------- Category Views -----------------
 def men(request, data=None):
@@ -254,7 +254,7 @@ def men(request, data=None):
     elif price == "above2000":
         men = men.filter(discounted_price__gt=2000)
 
-    return render(request, 'app/men.html', {'mens': men})
+    return render(request, 'app/product/men.html', {'mens': men})
 
 def women(request, data=None):
     women = Product.objects.filter(category='W')
@@ -270,7 +270,7 @@ def women(request, data=None):
     elif price == "above2000":
         women = women.filter(discounted_price__gt=2000)
 
-    return render(request, 'app/women.html', {'womens': women})
+    return render(request, 'app/product/women.html', {'womens': women})
 
 
 def jwellery(request, data=None):
@@ -287,21 +287,21 @@ def jwellery(request, data=None):
     elif price == "above2000":
         jwellery = jwellery.filter(discounted_price__gt=2000)
 
-    return render(request, 'app/jwellery.html', {'jwellerys': jwellery})
+    return render(request, 'app/product/jwellery.html', {'jwellerys': jwellery})
 
 
 # ----------------- Authentication Views -----------------
 class CustomerRegistrationView(View):
  def get (self, request):
   form = CustomerRegistrationForm()
-  return render(request, 'app/customerregistration.html', {'form': form})
+  return render(request, 'app/authen/customerregistration.html', {'form': form})
 
  def post(self, request):
   form=CustomerRegistrationForm(request.POST)
   if form.is_valid():
    messages.success(request, 'Congratulations!! Registered Successfully')
    form.save()
-  return render(request, 'app/customerregistration.html', {'form': form})
+  return render(request, 'app/authen/customerregistration.html', {'form': form})
 
 @login_required
 def checkout(request):
@@ -318,7 +318,7 @@ def checkout(request):
       amount += tempamount
       total_amount = amount + shiiping_amount
 
-  return render(request, 'app/checkout.html', {'add': add, 'totalamount': total_amount, 'cart_items': cart_items})
+  return render(request, 'app/cart/checkout.html', {'add': add, 'totalamount': total_amount, 'cart_items': cart_items})
 
 @login_required
 def order_done(request):
@@ -372,7 +372,7 @@ def chatbot(request):
             return JsonResponse({'error': str(e)}, status=500)
 
 
-    return render(request, 'app/try.html')
+    return render(request, 'app/faq/try.html')
 
 
 def generate_bot_response(user_message):
@@ -440,30 +440,30 @@ def search_products(request):
         # Filter products whose title contains any of the words exactly
         search_results = Product.objects.filter(title__iregex=regex_pattern)
 
-    return render(request, 'app/search_results.html', {'search_results': search_results, 'query': query})
+    return render(request, 'app/faq/search_results.html', {'search_results': search_results, 'query': query})
 
 # ----------------- Static/Other Pages -----------------
 
 def contactus(request):
-  return render(request, 'app/contact.html')
+  return render(request, 'app/faq/contact.html')
 
 def tryon(request):
-    return render(request, 'app/try.html')
+    return render(request, 'app/faq/try.html')
 
 def mamun(request):
-    return render(request, 'app/mamun.html')
+    return render(request, 'app/profile/mamun.html')
 
 def faq(request):
-    return render(request, 'app/faq.html')
+    return render(request, 'app/faq/faq.html')
 
 def return_policy(request):
-    return render(request, 'app/return_policy.html')
+    return render(request, 'app/faq/return_policy.html')
 
 def size_guide(request):
-    return render(request, 'app/size_guide.html')
+    return render(request, 'app/faq/size_guide.html')
 
 def shipping_info(request):
-    return render(request, 'app/shipping_info.html')
+    return render(request, 'app/faq/shipping_info.html')
 
 
 @login_required
