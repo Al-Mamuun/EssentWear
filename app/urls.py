@@ -24,6 +24,7 @@ urlpatterns = [
     path('men/', views.men, name='men'),
     path('women/', views.women, name='women'),
     path('jwellery/', views.jwellery, name='jwellery'),
+    path('medicine/', views.medicine, name='medicine'),
     path('accounts/login/', auth_views.LoginView.as_view(template_name='app/authen/login.html', authentication_form=LoginForm), name='login'),
 
 

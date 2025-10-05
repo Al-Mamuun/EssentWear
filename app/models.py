@@ -24,6 +24,7 @@ CATEGORY_CHOICES = (
     ('M', 'Men'),
     ('W', 'Women'),
     ('J', 'Jewelry'),
+    ('O','Medicine'),
 )
 
 class Product(models.Model):

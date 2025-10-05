@@ -16,7 +16,8 @@ class Productview(View):
   men = Product.objects.filter(category='M')
   women = Product.objects.filter(category='W')
   jwellery = Product.objects.filter(category='J')
-  return render(request, 'app/home/home.html', { 'men' : men, 'women' : women, 'jwellery': jwellery })
+  medicine=Product.objects.filter(category='O')
+  return render(request, 'app/home/home.html', { 'men' : men, 'women' : women, 'jwellery': jwellery,'medicine':medicine})
 
 class ProductDeatilView(View):
  def get(self, request, pk):
@@ -289,6 +290,22 @@ def jwellery(request, data=None):
 
     return render(request, 'app/product/jwellery.html', {'jwellerys': jwellery})
 
+
+def medicine(request, data=None):
+    medicine = Product.objects.filter(category='O')
+
+    # price range filter
+    price = request.GET.get("price")
+    if price == "under500":
+        medicine = medicine.filter(discounted_price__lt=500)
+    elif price == "500-1000":
+        medicine = medicine.filter(discounted_price__gte=500, discounted_price__lte=1000)
+    elif price == "1000-2000":
+        medicine = medicine.filter(discounted_price__gte=1000, discounted_price__lte=2000)
+    elif price == "above2000":
+        medicine = medicine.filter(discounted_price__gt=2000)
+
+    return render(request, 'app/product/medicine.html', {'medicines': medicine})
 
 # ----------------- Authentication Views -----------------
 class CustomerRegistrationView(View):
