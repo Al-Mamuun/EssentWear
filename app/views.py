@@ -408,6 +408,8 @@ def generate_bot_response(user_message):
        return "Here is the link of men section: <a href='http://127.0.0.1:8000/men/'>Click here</a><br>Please checkout"
     elif "jwellery" in user_message or 'jwellry' in user_message  or 'jewellery' in user_message :
        return "Here is the link of jwellery section: <a href='http://127.0.0.1:8000/jwellery/'>Click here</a> <br> Please checkout"
+    elif "medicine" in user_message or 'medecine' in user_message  or 'medecene' in user_message :
+       return "Here is the link of jwellery section: <a href='http://127.0.0.1:8000/medicine/'>Click here</a> <br> Please checkout"
     elif "for summer" in user_message :
        return "Light and breathable fabrics like cotton and linen are perfect choices for comfortable summer wear."
     elif "my size" in user_message :
