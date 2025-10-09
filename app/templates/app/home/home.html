@@ -424,6 +424,10 @@
               <label class="form-label fw-bold">Product Image</label>
               <input type="file" name="p_image" class="form-control" required>
             </div>
+            <div class="col-md-12">
+            <label class="form-label fw-bold">Owner</label>
+            <input type="text" class="form-control" value="{{ request.user.username }}" readonly>
+          </div>
           </div>
         </div>
         <div class="modal-footer">

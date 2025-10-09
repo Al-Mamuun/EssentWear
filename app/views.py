@@ -28,20 +28,27 @@ class ProductDeatilView(View):
   return render(request, 'app/product/productdetail.html', {'product': product, 'item_already_in_cart':item_already_in_cart})
 
 
+# Delete View
+@method_decorator(login_required, name='dispatch')
 class ProductDeleteView(View):
     def post(self, request, pk):
-        if not request.user.is_superuser:
+        product = get_object_or_404(Product, pk=pk)
+        # Only owner can delete (superuser can't from this view)
+        if request.user != product.owner:
             messages.error(request, "You are not authorized to delete this product.")
             return redirect('product-detail', pk=pk)
-
-        product = get_object_or_404(Product, pk=pk)
         product.delete()
         messages.success(request, f"Product '{product.title}' has been deleted successfully.")
-        return redirect('home')  # Redirect to homepage or product list
+        return redirect('home')
 
-@user_passes_test(lambda u: u.is_superuser)
+# Edit View
+@login_required
 def product_edit(request, pk):
     product = get_object_or_404(Product, pk=pk)
+    # Only owner can edit (superuser can't from this view)
+    if request.user != product.owner:
+        messages.error(request, "You are not authorized to edit this product.")
+        return redirect('product-detail', pk=pk)
     if request.method == "POST":
         form = ProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
@@ -486,7 +493,6 @@ def shipping_info(request):
 
 
 @login_required
-@user_passes_test(lambda u: u.is_superuser)
 def add_product(request):
     if request.method == "POST":
         title = request.POST.get("title")
@@ -502,8 +508,9 @@ def add_product(request):
             selling_price=selling_price,
             discounted_price=discounted_price,
             description=description,
-            p_image=image
+            p_image=image,
+            owner=request.user  # ekhane owner save korben
         )
-        return redirect("home")  # নতুন প্রোডাক্ট দিলে home এ ফিরবে
+        return redirect("home")
 
     return redirect("home")

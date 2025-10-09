@@ -26,10 +26,10 @@
         {% endif %}
       </h4>
 
-      <!-- Buttons: Superuser OR Normal User -->
+      <!-- Buttons -->
       <div class="d-flex flex-wrap gap-3 my-4">
-        {% if request.user.is_superuser %}
-          <!-- Superuser: Edit + Delete -->
+        {% if request.user == product.owner %}
+          <!-- Superuser or Owner: Edit + Delete -->
           <a href="{% url 'product-edit' product.id %}" class="btn btn-pink shadow px-4 py-2">
             <i class="fas fa-edit me-1"></i> Edit
           </a>
@@ -42,7 +42,6 @@
             </button>
           </form>
         {% else %}
-          <!-- Normal User: Add to Cart / Buy Now -->
           {% if request.user.is_authenticated %}
             {% if item_already_in_cart %}
               <a href="{% url 'showcart' %}" class="btn btn-pink shadow px-4 py-2">Go to Cart</a>
@@ -64,7 +63,7 @@
               </form>
             {% endif %}
           {% else %}
-            <!-- Guest: Add to Cart + Order Now -->
+            <!-- Guest -->
             <form action="{% url 'add-to-cart' %}?next={% url 'product-detail' pk=product.id %}" method="POST" class="d-inline">
               {% csrf_token %}
               <input type="hidden" name="prod_id" value="{{ product.id }}">
