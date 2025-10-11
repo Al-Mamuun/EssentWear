@@ -410,8 +410,6 @@ def order_done(request):
     else:
         return redirect("showcart")
 
-
-
 # ----------------- Other Views -----------------
 def chatbot(request):
     if request.method == 'POST':
