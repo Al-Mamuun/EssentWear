@@ -35,7 +35,7 @@ class Product(models.Model):
     category = models.CharField(choices=CATEGORY_CHOICES, max_length=2)
     p_image = models.ImageField(upload_to='product_img')
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='products',null=True, blank=True) # Added owner field
-    stock = models.PositiveIntegerField(default=0)  # Available quantity
+    quantity = models.PositiveIntegerField(default=0)  # 🧮 নতুন field
 
     def __str__(self):
         return str(self.title)

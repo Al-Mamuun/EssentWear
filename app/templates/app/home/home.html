@@ -384,6 +384,7 @@
 </div>
 
 <!-- Modal -->
+<!-- Modal -->
 <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content rounded-3">
@@ -416,6 +417,10 @@
               <label class="form-label fw-bold">Discounted Price</label>
               <input type="number" name="discounted_price" class="form-control" required>
             </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold">Quantity (Stock)</label>
+              <input type="number" name="quantity" class="form-control" min="1" value="1" required>
+            </div>
             <div class="col-md-12">
               <label class="form-label fw-bold">Description</label>
               <textarea name="description" rows="3" class="form-control"></textarea>
@@ -425,9 +430,9 @@
               <input type="file" name="p_image" class="form-control" required>
             </div>
             <div class="col-md-12">
-            <label class="form-label fw-bold">Owner</label>
-            <input type="text" class="form-control" value="{{ request.user.username }}" readonly>
-          </div>
+              <label class="form-label fw-bold">Owner</label>
+              <input type="text" class="form-control" value="{{ request.user.username }}" readonly>
+            </div>
           </div>
         </div>
         <div class="modal-footer">
@@ -439,6 +444,7 @@
     </div>
   </div>
 </div>
+
 {% endif %}
 
 
