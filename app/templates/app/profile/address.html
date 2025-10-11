@@ -1,88 +1,148 @@
 {% extends 'app/base.html' %}
 {% load static %}
-{% block title %}Address{% endblock title %}
+{% block title %}Profile & Address{% endblock title %}
 
 {% block main-content %}
 <div class="container my-5">
- <div class="row">
-  <h3>Welcome <span class="text-capitalize">{{ request.user.username }}</span></h3>
+  <div class="row">
+    <!-- Header -->
+    <div class="col-12 mb-4">
+      <h3 class="fw-bold text-pink-light">
+        <i class="fas fa-user-circle me-2"></i> Welcome <span class="text-capitalize">{{ request.user.username }}</span>
+      </h3>
+      <p class="text-muted">Manage your profile and saved addresses for a smoother experience.</p>
+    </div>
 
-  <!-- Sidebar -->
-  <div class="col-sm-2 border-end">
-   <ul class="list-unstyled">
-    <li class="d-grid mb-2">
-      <a href="{% url 'profile' %}" class="btn btn-outline-primary">Profile</a>
-    </li>
-    <li class="d-grid">
-      <a href="{% url 'address' %}" class="btn btn-outline-primary active">Address</a>
-    </li>
-   </ul>
-  </div>
+    <!-- Sidebar -->
+    <div class="col-md-3 col-sm-4 mb-4">
+      <div class="list-group shadow-sm rounded-4 border-pink-light">
+        <a href="{% url 'profile' %}" class="list-group-item list-group-item-action d-flex align-items-center">
+          <i class="fas fa-id-card me-2 text-pink-light"></i> Profile
+        </a>
+        <a href="{% url 'address' %}" class="list-group-item list-group-item-action d-flex align-items-center active bg-pink-light text-white">
+          <i class="fas fa-map-marker-alt me-2"></i> Address
+        </a>
+      </div>
+    </div>
 
-  <!-- Address Section -->
-  <div class="col-sm-9 offset-sm-1">
-    <div class="row">
-      {% for ad in add %}
-      <div class="col-sm-6 mb-3">
-        <div class="card shadow-sm rounded-3">
-          <div class="card-body">
-            <h5 class="card-title">Address {{ forloop.counter }}</h5>
-            <p><strong>Name:</strong> {{ ad.name }}</p>
-            <p><strong>Phone No:</strong> {{ ad.phone_no }}</p>
-            <p><strong>Email:</strong> {{ ad.email }}</p>
-            <p><strong>Address:</strong> {{ ad.address }}</p>
+    <!-- Address Section -->
+    <div class="col-md-9 col-sm-8">
+      <div class="row g-4">
+        {% for ad in add %}
+        <div class="col-md-6">
+          <div class="card shadow-sm border-0 rounded-4 h-100 border-pink-light">
+            <div class="card-header text-white rounded-top d-flex align-items-center justify-content-between"
+                 style="background: linear-gradient(90deg, #ffd6e8, #ffb3d1);">
+              <h5 class="card-title mb-0"><i class="fas fa-home me-2"></i> Address {{ forloop.counter }}</h5>
+              <span class="badge bg-light text-pink-light">{{ ad.id }}</span>
+            </div>
+            <div class="card-body">
+              <p class="mb-1"><strong>Name:</strong> {{ ad.name }}</p>
+              <p class="mb-1"><strong>Phone:</strong> {{ ad.phone_no }}</p>
+              <p class="mb-1"><strong>Email:</strong> {{ ad.email }}</p>
+              <p class="mb-2"><strong>Address:</strong> {{ ad.address }}</p>
 
-            <button class="btn btn-sm btn-primary mt-2" onclick="toggleEditForm({{ ad.id }})">
-              <i class="fas fa-edit me-1"></i> Edit Address
-            </button>
+              <button class="btn btn-sm btn-pink-light mt-2" onclick="toggleEditForm({{ ad.id }})">
+                <i class="fas fa-edit me-1"></i> Edit
+              </button>
 
-            <!-- Inline Edit Form -->
-            <div id="editForm_{{ ad.id }}" style="display:none; margin-top:10px;">
-              <form action="" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="address_id" value="{{ ad.id }}">
-                <div class="mb-2">
-                  <label for="name_{{ ad.id }}" class="form-label">Name</label>
-                  <input type="text" name="name" id="name_{{ ad.id }}" class="form-control"
-                         value="{{ ad.name }}" required>
-                </div>
-                <div class="mb-2">
-                  <label for="phone_{{ ad.id }}" class="form-label">Phone No</label>
-                  <input type="text" name="phone_no" id="phone_{{ ad.id }}" class="form-control"
-                         value="{{ ad.phone_no }}">
-                </div>
-                <div class="mb-2">
-                  <label for="email_{{ ad.id }}" class="form-label">Email</label>
-                  <input type="email" name="email" id="email_{{ ad.id }}" class="form-control"
-                         value="{{ ad.email }}" required>
-                </div>
-                <div class="mb-2">
-                  <label for="address_{{ ad.id }}" class="form-label">Address</label>
-                  <textarea name="address" id="address_{{ ad.id }}" class="form-control" rows="2">{{ ad.address }}</textarea>
-                </div>
-                <button type="submit" class="btn btn-success btn-sm mt-2">Save Changes</button>
-                <button type="button" class="btn btn-secondary btn-sm mt-2" onclick="toggleEditForm({{ ad.id }})">Cancel</button>
-              </form>
+              <!-- Inline Edit Form -->
+              <div id="editForm_{{ ad.id }}" class="mt-3 p-3 border rounded-3 bg-pink-light-light" style="display:none;">
+                <form action="" method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="address_id" value="{{ ad.id }}">
+                  <div class="mb-2">
+                    <label for="name_{{ ad.id }}" class="form-label text-dark">Name</label>
+                    <input type="text" name="name" id="name_{{ ad.id }}" class="form-control" value="{{ ad.name }}" required>
+                  </div>
+                  <div class="mb-2">
+                    <label for="phone_{{ ad.id }}" class="form-label text-dark">Phone No</label>
+                    <input type="text" name="phone_no" id="phone_{{ ad.id }}" class="form-control" value="{{ ad.phone_no }}">
+                  </div>
+                  <div class="mb-2">
+                    <label for="email_{{ ad.id }}" class="form-label text-dark">Email</label>
+                    <input type="email" name="email" id="email_{{ ad.id }}" class="form-control" value="{{ ad.email }}" required>
+                  </div>
+                  <div class="mb-2">
+                    <label for="address_{{ ad.id }}" class="form-label text-dark">Address</label>
+                    <textarea name="address" id="address_{{ ad.id }}" class="form-control" rows="2">{{ ad.address }}</textarea>
+                  </div>
+                  <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-pink-light btn-sm">Save</button>
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="toggleEditForm({{ ad.id }})">Cancel</button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
+        {% empty %}
+          <p class="text-muted">No addresses found. Add a new one!</p>
+        {% endfor %}
       </div>
-      {% empty %}
-        <p>No addresses found.</p>
-      {% endfor %}
-    </div>
 
-    <!-- Messages -->
-    {% if messages %}
-      {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} mt-3 shadow-sm rounded-3">
-          {{ message }}
+      <!-- Messages -->
+      {% if messages %}
+        <div class="mt-4">
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} shadow-sm rounded-3">
+              {{ message }}
+            </div>
+          {% endfor %}
         </div>
-      {% endfor %}
-    {% endif %}
+      {% endif %}
+    </div>
   </div>
- </div>
 </div>
+
+<!-- Light Pink Theme Styling -->
+<style>
+/* Buttons */
+.btn-pink-light {
+  background: #ffccd9;
+  color: #85003b;
+  border: none;
+  transition: 0.3s;
+}
+.btn-pink-light:hover {
+  background: #ffb3d1;
+  color: #65002a;
+}
+
+/* Card Borders & Hover */
+.card {
+  border: 1px solid #ffccd9;
+  transition: 0.3s;
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(255, 204, 217, 0.3);
+}
+
+/* Sidebar Active */
+.list-group-item.active.bg-pink-light {
+  background: #ffccd9 !important;
+  color: #85003b !important;
+}
+
+/* Text Pink */
+.text-pink-light {
+  color: #ff6699 !important;
+}
+
+/* Light pink backgrounds */
+.bg-pink-light {
+  background: #ffd6e8;
+}
+.bg-pink-light-light {
+  background: #ffe6f2;
+}
+
+/* Badge Pink */
+.badge.text-pink-light {
+  color: #ff6699;
+}
+</style>
 
 <script>
 function toggleEditForm(id) {

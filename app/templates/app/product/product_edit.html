@@ -44,6 +44,12 @@
               {{ form.p_image }}
             </div>
 
+            <div class="mb-3">
+              {{ form.quantity.label_tag }}
+              {{ form.quantity }}
+            </div>
+
+
             <!-- Buttons -->
             <div class="d-flex justify-content-between mt-4">
               <a href="{% url 'product-detail' product.id %}" class="btn btn-outline-secondary px-4 rounded-pill">

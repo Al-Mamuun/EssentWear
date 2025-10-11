@@ -23,52 +23,58 @@ $('#slider1, #slider2, #slider3').owlCarousel({
 })
 
 $('.plus-cart').click(function(){
-    var id = $(this).attr("pid").toString();
-    var eml = this.parentNode.children[2]
-   $.ajax({
-       type: "GET",
-       url: "/pluscart",
-       data:{
-           prod_id: id
-       },
-       success: function(data){
-           eml.innerText = data.quantity
-           document.getElementById("amount").innerText=data.amount
-           document.getElementById("totalamount").innerText=data.totalamount
-       }
-   })
-})
+    var id = $(this).attr("pid"); // product id
+    var quantitySpan = $(this).siblings('.quantity'); // quantity span
+
+    $.ajax({
+        type: 'GET',
+        url: '/pluscart',
+        data: {
+            prod_id: id
+        },
+        success: function(data){
+            if(data.status === 'success'){
+                quantitySpan.text(data.quantity); // quantity update
+                $('#amount').text(data.amount); // subtotal update
+                $('#totalamount').text(data.totalamount); // total update
+            } else {
+                alert(data.message); // stock limit reached
+            }
+        }
+    });
+});
 
 $('.minus-cart').click(function(){
     var id = $(this).attr("pid").toString();
-    var eml = this.parentNode.children[2]
-   $.ajax({
+    var eml = $(this).siblings('.quantity'); // ✅ একইভাবে
+    $.ajax({
        type: "GET",
        url: "/minuscart",
        data:{
            prod_id: id
        },
        success: function(data){
-           eml.innerText = data.quantity
-           document.getElementById("amount").innerText=data.amount
-           document.getElementById("totalamount").innerText=data.totalamount
+           eml.text(data.quantity)
+           $('#amount').text(data.amount)
+           $('#totalamount').text(data.totalamount)
        }
    })
 })
 
 $('.remove-cart').click(function(){
     var id = $(this).attr("pid").toString();
-    var eml = this
-   $.ajax({
+    var eml = $(this)
+    $.ajax({
        type: "GET",
        url: "/removecart",
        data:{
            prod_id: id
        },
        success: function(data){
-           document.getElementById("amount").innerText=data.amount
-           document.getElementById("totalamount").innerText=data.totalamount
-           eml.parentNode.parentNode.parentNode.parentNode.remove()
+           $('#amount').text(data.amount)
+           $('#totalamount').text(data.totalamount)
+           eml.closest('.cart-item').remove() // ✅ parent div remove
        }
    })
 })
+

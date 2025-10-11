@@ -92,75 +92,94 @@ def show_cart(request):
   else:
    return render(request, 'app/cart/emptycart.html')
 
+@login_required
 def plus_cart(request):
- if request.method == 'GET':
-  prod_id = request.GET['prod_id']
-  c = Cart.objects.get( Q (product = prod_id) & Q (user=request.user))
-  c.quantity += 1
-  c.save()
-  amount = 0.0
-  shiiping_amount = 100.0
-  total_amount = 0.0
-  cart_product = [p for p in Cart.objects.all() if p.user ==request.user]
-  if cart_product:
-   for p in cart_product:
-    tempamount = (p.quantity * p.product.discounted_price)
-    amount += tempamount
-    total_amount = amount + shiiping_amount
-  data = {
-     'quantity': c.quantity,
-     'amount': amount,
-     'totalamount': total_amount
-    }
-  return JsonResponse(data)
+    if request.method == 'GET':
+        prod_id = request.GET.get('prod_id')
+        cart_item = get_object_or_404(Cart, Q(product=prod_id) & Q(user=request.user))
+        
+        if cart_item.quantity < cart_item.product.quantity:  # Stock limit check
+            cart_item.quantity += 1
+            cart_item.save()
+            status = 'success'
+            message = 'Quantity updated'
+        else:
+            status = 'error'
+            message = 'Stock limit reached'
 
+        # Calculate totals
+        cart_items = Cart.objects.filter(user=request.user)
+        amount = sum([c.quantity * c.product.discounted_price for c in cart_items])
+        shipping_amount = 100.0
+        total_amount = amount + shipping_amount
+
+        return JsonResponse({
+            'status': status,
+            'message': message,
+            'quantity': cart_item.quantity,
+            'amount': amount,
+            'totalamount': total_amount
+        })
+
+
+@login_required
 def minus_cart(request):
- if request.method == 'GET':
-  prod_id = request.GET['prod_id']
-  c = Cart.objects.get( Q (product = prod_id) & Q (user=request.user))
-  c.quantity -= 1
-  c.save()
-  amount = 0.0
-  shiiping_amount = 100.0
-  total_amount = 0.0
-  cart_product = [p for p in Cart.objects.all() if p.user ==request.user]
-  if cart_product:
-   for p in cart_product:
-    tempamount = (p.quantity * p.product.discounted_price)
-    amount += tempamount
-    total_amount = amount + shiiping_amount
-  data = {
-     'quantity': c.quantity,
-     'amount': amount,
-     'totalamount': total_amount
-    }
-  return JsonResponse(data)
+    if request.method == 'GET':
+        prod_id = request.GET.get('prod_id')
+        cart_item = get_object_or_404(Cart, Q(product=prod_id) & Q(user=request.user))
+        
+        if cart_item.quantity > 1:
+            cart_item.quantity -= 1
+            cart_item.save()
+            status = 'success'
+            message = 'Quantity updated'
+        else:
+            cart_item.delete()
+            status = 'success'
+            message = 'Item removed'
+            cart_item.quantity = 0  # for JS update
 
+        # Calculate totals
+        cart_items = Cart.objects.filter(user=request.user)
+        amount = sum([c.quantity * c.product.discounted_price for c in cart_items])
+        shipping_amount = 100.0
+        total_amount = amount + shipping_amount
+
+        return JsonResponse({
+            'status': status,
+            'message': message,
+            'quantity': cart_item.quantity if cart_item.quantity else 0,
+            'amount': amount,
+            'totalamount': total_amount
+        })
+
+
+@login_required
 def remove_cart(request):
     if request.method == 'GET':
         prod_id = request.GET.get('prod_id')
         try:
-            c = Cart.objects.get(Q(product_id=prod_id) & Q(user=request.user))
-            c.delete()
+            cart_item = Cart.objects.get(Q(product_id=prod_id) & Q(user=request.user))
+            cart_item.delete()
+            status = 'success'
+            message = 'Item removed'
         except Cart.DoesNotExist:
-            return JsonResponse({'error': 'Cart item not found'}, status=404)
+            status = 'error'
+            message = 'Cart item not found'
 
-        amount = 0.0
+        # Calculate totals
+        cart_items = Cart.objects.filter(user=request.user)
+        amount = sum([c.quantity * c.product.discounted_price for c in cart_items])
         shipping_amount = 100.0
-        total_amount = 0.0
+        total_amount = amount + shipping_amount
 
-        cart_product = Cart.objects.filter(user=request.user)
-        if cart_product:
-            for p in cart_product:
-                tempamount = (p.quantity * p.product.discounted_price)
-                amount += tempamount
-            total_amount = amount + shipping_amount
-
-        data = {
+        return JsonResponse({
+            'status': status,
+            'message': message,
             'amount': amount,
             'totalamount': total_amount
-        }
-        return JsonResponse(data)
+        })
+
 
 # ----------------- Profile Views -----------------
 @method_decorator(login_required, name='dispatch')
@@ -346,14 +365,23 @@ def checkout(request):
 
 @login_required
 def order_done(request):
-  user = request.user
-  custid = request.GET.get('custid')
-  customer = Customer.objects.get(id = custid)
-  cart = Cart.objects.filter(user = user)
-  for c in cart:
-    OrderPlaced(user=user, customer = customer, product=c.product, quantity = c.quantity).save()
-    c.delete()
-  return redirect("orders")
+    user = request.user
+    custid = request.GET.get('custid')
+    customer = Customer.objects.get(id=custid)
+    cart = Cart.objects.filter(user=user)
+    for c in cart:
+        if c.quantity > c.product.quantity:
+            messages.error(request, f"Not enough stock for {c.product.title}")
+            return redirect('showcart')
+
+        # Stock update
+        c.product.quantity -= c.quantity
+        c.product.save()
+
+        OrderPlaced(user=user, customer=customer, product=c.product, quantity=c.quantity).save()
+        c.delete()
+    return redirect("orders")
+
 
 # ----------------- Other Views -----------------
 def chatbot(request):
@@ -501,6 +529,7 @@ def add_product(request):
         discounted_price = request.POST.get("discounted_price")
         description = request.POST.get("description")
         image = request.FILES.get("p_image")
+        quantity = int(request.POST.get("quantity", 1))  # ✅ Add this line
 
         Product.objects.create(
             title=title,
@@ -509,7 +538,8 @@ def add_product(request):
             discounted_price=discounted_price,
             description=description,
             p_image=image,
-            owner=request.user  # ekhane owner save korben
+            quantity=quantity,           # ✅ Save quantity
+            owner=request.user
         )
         return redirect("home")
 
