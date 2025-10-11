@@ -134,10 +134,9 @@ def minus_cart(request):
             status = 'success'
             message = 'Quantity updated'
         else:
-            cart_item.delete()
-            status = 'success'
-            message = 'Item removed'
-            cart_item.quantity = 0  # for JS update
+            # Do not reduce below 1
+            status = 'error'
+            message = 'Minimum quantity is 1'
 
         # Calculate totals
         cart_items = Cart.objects.filter(user=request.user)
@@ -148,10 +147,11 @@ def minus_cart(request):
         return JsonResponse({
             'status': status,
             'message': message,
-            'quantity': cart_item.quantity if cart_item.quantity else 0,
+            'quantity': cart_item.quantity,
             'amount': amount,
             'totalamount': total_amount
         })
+
 
 
 @login_required
@@ -348,39 +348,53 @@ class CustomerRegistrationView(View):
 
 @login_required
 def checkout(request):
-  user = request.user
-  add = Customer.objects.filter(user=user)
-  cart_items = Cart.objects.filter(user = user)
-  amount = 0.0
-  shiiping_amount = 60.0
-  total_amount = 0.0
-  cart_product = [p for p in Cart.objects.all() if p.user ==request.user]
-  if cart_product:
-    for p in cart_product:
-      tempamount = (p.quantity * p.product.discounted_price)
-      amount += tempamount
-      total_amount = amount + shiiping_amount
+    user = request.user
+    add = Customer.objects.filter(user=user)
+    # Only fetch items with quantity > 0
+    cart_items = Cart.objects.filter(user=user, quantity__gt=0)
+    
+    if not cart_items:
+        messages.error(request, "Your cart has no valid items to checkout.")
+        return redirect('showcart')
 
-  return render(request, 'app/cart/checkout.html', {'add': add, 'totalamount': total_amount, 'cart_items': cart_items})
+    # Calculate totals
+    amount = sum([c.quantity * c.product.discounted_price for c in cart_items])
+    shipping_amount = 100.0
+    total_amount = amount + shipping_amount
+
+    return render(request, 'app/cart/checkout.html', {
+        'add': add,
+        'totalamount': total_amount,
+        'cart_items': cart_items
+    })
+
 
 @login_required
 def order_done(request):
     user = request.user
     custid = request.GET.get('custid')
     customer = Customer.objects.get(id=custid)
-    cart = Cart.objects.filter(user=user)
-    for c in cart:
+    cart_items = Cart.objects.filter(user=user)
+
+    # Check for invalid quantities before placing any order
+    for c in cart_items:
+        if c.quantity <= 0:
+            messages.error(request, f"Cannot place order for '{c.product.title}' because quantity is 0.")
+            return redirect('showcart')
         if c.quantity > c.product.quantity:
-            messages.error(request, f"Not enough stock for {c.product.title}")
+            messages.error(request, f"Not enough stock for '{c.product.title}'. Available: {c.product.quantity}")
             return redirect('showcart')
 
-        # Stock update
+    # If all items are valid, place orders
+    for c in cart_items:
         c.product.quantity -= c.quantity
         c.product.save()
-
-        OrderPlaced(user=user, customer=customer, product=c.product, quantity=c.quantity).save()
+        OrderPlaced.objects.create(user=user, customer=customer, product=c.product, quantity=c.quantity)
         c.delete()
+
+    messages.success(request, "Your order has been placed successfully!")
     return redirect("orders")
+
 
 
 # ----------------- Other Views -----------------

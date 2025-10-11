@@ -4,6 +4,32 @@
 
 {% block main-content %}
 <div class="container my-5">
+
+<!-- ----------------- Django Messages ----------------- -->
+{% if messages %}
+<div class="mb-4">
+  {% for message in messages %}
+  <div class="alert alert-dismissible fade show d-flex align-items-center message-box {{ message.tags }}" role="alert">
+    <!-- Icon -->
+    <span class="me-2">
+      {% if message.tags == 'success' %}
+        <i class="fas fa-check-circle"></i>
+      {% elif message.tags == 'warning' %}
+        <i class="fas fa-exclamation-triangle"></i>
+      {% elif message.tags == 'error' or message.tags == 'danger' %}
+        <i class="fas fa-times-circle"></i>
+      {% else %}
+        <i class="fas fa-info-circle"></i>
+      {% endif %}
+    </span>
+    <div class="flex-grow-1">
+      {{ message }}
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
   <div class="text-center mb-5">
     <h1 class="fw-bold display-5 text-gradient">🛒 Your Shopping Cart</h1>
     <p class="text-muted">Review your items and proceed to checkout</p>
@@ -16,7 +42,8 @@
         <div class="card-body p-4">
           {% if cart %}
             {% for c in cart %}
-            <div class="cart-item row align-items-center mb-4 pb-3 border-bottom">
+            <div class="cart-item row align-items-center mb-4 pb-3 border-bottom
+                        {% if c.quantity <= 0 %}bg-light text-danger zero-quantity-item{% endif %}">
               <!-- Product Image -->
               <div class="col-md-3 text-center">
                 <img src="{{ c.product.p_image.url }}" alt="{{ c.product.title }}" 
@@ -39,7 +66,12 @@
                         <i class="fas fa-plus"></i>
                       </button>
                     </div>
+
+                    {% if c.quantity <= 0 %}
+                    <p class="small fst-italic mt-2">⚠️ Cannot order this item — quantity is 0</p>
+                    {% endif %}
                   </div>
+
                   <div class="text-end">
                     <p class="fw-bold text-success fs-5 mb-2">৳ {{ c.product.discounted_price }}</p>
                     <button pid="{{ c.product.id }}" class="btn btn-outline-danger btn-sm remove-cart">
@@ -77,8 +109,9 @@
             </li>
           </ul>
 
-          <a href="{% url 'checkout' %}" 
-             class="btn w-100 py-3 fw-bold text-white btn-gradient rounded-pill shadow-sm">
+          <a href="#" 
+             class="btn w-100 py-3 fw-bold text-white btn-gradient rounded-pill shadow-sm"
+             id="checkout-btn">
              <i class="fas fa-lock me-2"></i> Proceed to Checkout
           </a>
         </div>
@@ -128,6 +161,79 @@
   justify-content: center;
   align-items: center;
 }
+
+/* Zero quantity item highlight */
+.zero-quantity-item {
+  background-color: #ffe6e6;
+  border: 1px solid #ff4d4d;
+}
+.zero-quantity-item .quantity {
+  font-weight: bold;
+  color: #ff0000;
+}
+
+.remove-cart {
+    width: auto;  /* fix width */
+    min-width: 80px;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.message-box.success {
+  background-color: #d4edda; /* soft green */
+  color: #155724; /* dark green text */
+  border: 1px solid #c3e6cb;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  font-weight: 500;
+}
+
+.message-box.success i {
+  color: #155724;
+}
+
+.message-box.warning {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+  border-radius: 0.5rem;
+}
+
+.message-box.danger, .message-box.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  border-radius: 0.5rem;
+}
+
+.message-box.info {
+  background-color: #d1ecf1;
+  color: #0c5460;
+  border: 1px solid #bee5eb;
+  border-radius: 0.5rem;
+}
+
 </style>
 
+<!-- 🛒 Checkout button JS -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const checkoutBtn = document.getElementById("checkout-btn");
+
+    checkoutBtn.addEventListener("click", function(e) {
+        // Check if any cart item has quantity 0
+        let zeroQuantity = document.querySelectorAll(".zero-quantity-item").length > 0;
+
+        if (zeroQuantity) {
+            e.preventDefault();  // Prevent going to checkout
+            alert("Cannot proceed to checkout. Some items have quantity 0. Please update your cart.");
+        } else {
+            // Go to checkout page
+            window.location.href = "{% url 'checkout' %}";
+        }
+    });
+});
+</script>
 {% endblock main-content %}
