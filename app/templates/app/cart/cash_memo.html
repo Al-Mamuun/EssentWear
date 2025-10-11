@@ -1,0 +1,93 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% load cart_extras %}
+
+{% block title %}Cash Memo{% endblock title %}
+
+{% block main-content %}
+<div id="cash-memo" class="container my-5 p-4 rounded shadow" style="background:#fff0f6; border:1px solid #ffc0dd; max-width:800px;">
+    
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+        <h1 class="h3 text-pink fw-bold">🧾 Cash Memo</h1>
+        <div>
+            <button onclick="window.print()" class="btn btn-outline-pink me-2" style="border-color:#ff66aa; color:#ff4081;">Print</button>
+            <a href="{% url 'home' %}" class="btn" style="background:#ff66aa; color:white; border:none;">Home</a>
+            <a href="{% url 'profile' %}" class="btn" style="background:#ff66aa; color:white; border:none;">Profile</a>
+        </div>
+    </div>
+
+    <!-- Customer Info -->
+    <div class="mb-4 p-3 rounded" style="background:#fff0f6; border:1px solid #ffc0dd;">
+        <h5 class="text-pink fw-semibold mb-3">Customer Details</h5>
+        <p><strong>Name:</strong> {{ customer.user.username }}</p>
+        <p><strong>Email:</strong> {{ customer.user.email }}</p>
+        {% if customer.phone %}
+        <p><strong>Phone:</strong> {{ customer.phone }}</p>
+        {% endif %}
+        <p><strong>Address:</strong> {{ customer.address }}, {{ customer.city }}, {{ customer.state }}</p>
+    </div>
+
+    <!-- Order Table -->
+    <table class="table table-striped table-hover border" style="background:#fff0f6;">
+        <thead style="background:#ff99c8; color:white;">
+            <tr>
+                <th>#</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ order.product.title }}</td>
+                <td>{{ order.quantity }}</td>
+                <td>${{ order.product.selling_price }}</td>
+                <td>${{ order.quantity|multiply:order.product.selling_price }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Grand Total -->
+    <div class="text-end fw-bold fs-5 mt-3 pt-2 border-top" style="border-color:#ffc0dd;">
+        Grand Total: ${{ orders|calc_total }}
+    </div>
+
+    <!-- Footer Note -->
+    <div class="text-center mt-4" style="color:#ff4081;">
+        Thank you for your purchase! 🛒
+    </div>
+</div>
+
+<!-- Print styles -->
+<style>
+    a.btn:hover {
+        background:#ff4081 !important;
+        color:white !important;
+    }
+
+    .text-pink { color:#ff4081 !important; }
+    .btn-outline-pink { border-color:#ff66aa; color:#ff4081; }
+    .btn-outline-pink:hover { background:#ff4081; color:white; }
+
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+        #cash-memo, #cash-memo * {
+            visibility: visible;
+        }
+        #cash-memo {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+        }
+        .btn { display: none; }
+    }
+</style>
+{% endblock %}

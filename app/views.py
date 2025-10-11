@@ -389,26 +389,28 @@ def order_done(request):
         # Place order for valid item
         c.product.quantity -= c.quantity
         c.product.save()
-        OrderPlaced.objects.create(
+        order = OrderPlaced.objects.create(
             user=user,
             customer=customer,
             product=c.product,
             quantity=c.quantity
         )
-        ordered_items.append(c.product.title)
+        ordered_items.append(order)
         c.delete()  # Only delete items that are successfully ordered
 
-    # Messages
-    if ordered_items:
-        messages.success(request, f"Ordered successfully: {', '.join(ordered_items)}")
     if skipped_items:
         messages.warning(request, f"Skipped items: {', '.join(skipped_items)}")
 
-    # If all items were ordered, go to orders page; else stay on cart
-    if not skipped_items:
-        return redirect("orders")
+    if ordered_items:
+        # Render cash memo for successful orders
+        return render(request, "app/cart/cash_memo.html", {
+            "customer": customer,
+            "orders": ordered_items
+        })
     else:
+        messages.error(request, "No items were ordered.")
         return redirect("showcart")
+
 
 # ----------------- Other Views -----------------
 def chatbot(request):
