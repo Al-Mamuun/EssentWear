@@ -368,7 +368,6 @@ def checkout(request):
         'cart_items': cart_items
     })
 
-
 @login_required
 def order_done(request):
     user = request.user
@@ -376,24 +375,40 @@ def order_done(request):
     customer = Customer.objects.get(id=custid)
     cart_items = Cart.objects.filter(user=user)
 
-    # Check for invalid quantities before placing any order
+    ordered_items = []
+    skipped_items = []
+
     for c in cart_items:
         if c.quantity <= 0:
-            messages.error(request, f"Cannot place order for '{c.product.title}' because quantity is 0.")
-            return redirect('showcart')
+            skipped_items.append(f"'{c.product.title}' quantity is 0")
+            continue
         if c.quantity > c.product.quantity:
-            messages.error(request, f"Not enough stock for '{c.product.title}'. Available: {c.product.quantity}")
-            return redirect('showcart')
+            skipped_items.append(f"'{c.product.title}' not enough stock (Available: {c.product.quantity})")
+            continue
 
-    # If all items are valid, place orders
-    for c in cart_items:
+        # Place order for valid item
         c.product.quantity -= c.quantity
         c.product.save()
-        OrderPlaced.objects.create(user=user, customer=customer, product=c.product, quantity=c.quantity)
-        c.delete()
+        OrderPlaced.objects.create(
+            user=user,
+            customer=customer,
+            product=c.product,
+            quantity=c.quantity
+        )
+        ordered_items.append(c.product.title)
+        c.delete()  # Only delete items that are successfully ordered
 
-    messages.success(request, "Your order has been placed successfully!")
-    return redirect("orders")
+    # Messages
+    if ordered_items:
+        messages.success(request, f"Ordered successfully: {', '.join(ordered_items)}")
+    if skipped_items:
+        messages.warning(request, f"Skipped items: {', '.join(skipped_items)}")
+
+    # If all items were ordered, go to orders page; else stay on cart
+    if not skipped_items:
+        return redirect("orders")
+    else:
+        return redirect("showcart")
 
 
 
