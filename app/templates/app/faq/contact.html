@@ -3,46 +3,104 @@
 {% block title %}Contact{% endblock title %}
 
 {% block main-content %}
+<style>
+  .contact-card {
+    background: linear-gradient(135deg, #ffe6f0 0%, #fff5f8 100%);
+    border: 2px solid #ffb6c1;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+  }
+
+  .contact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(255, 182, 193, 0.4);
+  }
+
+  .contact-title {
+    color: #ff4081;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  .contact-info i {
+    font-size: 1.1rem;
+    width: 25px;
+    text-align: center;
+  }
+
+  .form-control {
+    border-radius: 10px;
+    border: 1.5px solid #ffc0cb;
+    transition: all 0.3s;
+  }
+
+  .form-control:focus {
+    border-color: #ff4081;
+    box-shadow: 0 0 5px rgba(255, 64, 129, 0.3);
+  }
+
+  .btn-send {
+    background: #ff4081;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.3s;
+  }
+
+  .btn-send:hover {
+    background: #e73370;
+    transform: scale(1.03);
+  }
+</style>
+
 <div class="container my-5">
   <div class="row justify-content-center">
     <div class="col-12 col-sm-8 col-md-6 col-lg-5">
-      <div class="card shadow-sm border-0 rounded-4 p-4">
+      <div class="card contact-card shadow-lg p-4">
         <div class="card-body text-center">
-          <h2 class="mb-4 text-primary"><i class="fas fa-envelope me-2"></i>Contact Us</h2>
-          <p class="mb-4 text-muted">Have questions or feedback? Reach out to us using the details below.</p>
+          <!-- Header -->
+          <h2 class="contact-title mb-3">
+            <i class="fas fa-envelope-open-text me-2"></i>Contact Us
+          </h2>
+          <p class="text-muted mb-4">We’d love to hear from you! Send us a message or reach out through the details below.</p>
 
-          <ul class="list-unstyled mb-4 text-start">
+          <!-- Contact Info -->
+          <ul class="list-unstyled mb-4 text-start contact-info">
             <li class="mb-3">
-              <i class="fas fa-map-marker-alt text-danger me-2"></i>
+              <i class="fas fa-map-marker-alt text-danger"></i>
               <strong>Address:</strong> Dhanmondi-15, Dhaka-1209
             </li>
             <li class="mb-3">
-              <i class="fas fa-phone-alt text-success me-2"></i>
+              <i class="fas fa-phone-alt text-success"></i>
               <strong>Phone:</strong> 01845196403
             </li>
             <li class="mb-3">
-              <i class="fas fa-envelope text-primary me-2"></i>
-              <strong>Email:</strong> <a href="mailto:uap@uap-bd.edu" class="text-decoration-none">22101158@uap-bd.edu</a>
+              <i class="fas fa-envelope text-primary"></i>
+              <strong>Email:</strong>
+              <a href="mailto:22101158@uap-bd.edu" class="text-decoration-none text-dark">22101152@uap-bd.edu</a>
             </li>
           </ul>
 
-          <!-- Optional: Contact Form -->
+          <!-- Contact Form -->
           <form method="POST" class="text-start">
             {% csrf_token %}
             <div class="mb-3">
-              <label for="name" class="form-label">Your Name</label>
+              <label for="name" class="form-label fw-semibold">Your Name</label>
               <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required>
             </div>
             <div class="mb-3">
-              <label for="email" class="form-label">Your Email</label>
+              <label for="email" class="form-label fw-semibold">Your Email</label>
               <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
             </div>
             <div class="mb-3">
-              <label for="message" class="form-label">Message</label>
+              <label for="message" class="form-label fw-semibold">Message</label>
               <textarea class="form-control" id="message" name="message" rows="4" placeholder="Type your message here..." required></textarea>
             </div>
             <div class="d-grid">
-              <button type="submit" class="btn btn-primary shadow-sm">Send Message</button>
+              <button type="submit" class="btn btn-send text-white py-2 shadow-sm">
+                <i class="fas fa-paper-plane me-1"></i> Send Message
+              </button>
             </div>
           </form>
 
